@@ -1,0 +1,837 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>qubixal.yt · qb网</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Crimson+Pro:ital,wght@1,300;1,400;1,600&family=Noto+Serif+SC:wght@300;400&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+        <style>
+            *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+
+            :root{
+                --bg:#eae6e0;
+                --bg2:#e2deda;
+                --fg:#141210;
+                --mid:#7a7672;
+                --light:#c0bbb4;
+                --pale:#d4d0ca;
+                --white:#f5f2ed;
+                --mono:'IBM Plex Mono',monospace;
+                --static: 'Chakra Petch',sans-serif;
+                --serif:'Crimson Pro','Georgia',serif;
+                --zh:'Noto Serif SC',serif;
+            }
+
+            html{scroll-behavior:smooth}
+
+            body{
+                background:var(--bg);
+                color:var(--fg);
+                font-family:var(--mono);
+                font-size:14px;
+                line-height:1.6;
+                cursor:none;
+                overflow-x:hidden;
+            }
+
+            /* noise overlay */
+            body::after{
+                content:'';
+                position:fixed;
+                inset:0;
+                pointer-events:none;
+                z-index:9000;
+                opacity:.025;
+                background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)'/%3E%3C/svg%3E");
+            }
+
+            /* ── CURSOR ── */
+            #c-ring,#c-dot{position:fixed;top:0;left:0;pointer-events:none;z-index:9999;transform:translate(-50%,-50%)}
+            #c-dot{width:5px;height:5px;background:var(--fg);border-radius:50%;transition:transform .1s}
+            #c-ring{width:30px;height:30px;border:1px solid var(--fg);border-radius:50%;transition:width .25s,height .25s,opacity .25s}
+            body.hovering #c-ring{width:46px;height:46px}
+            body.hovering #c-dot{transform:translate(-50%,-50%) scale(0)}
+
+            /* ── NAV ── */
+            nav{
+                position:fixed;top:0;left:0;right:0;
+                display:flex;align-items:center;justify-content:space-between;
+                padding:18px 48px;
+                z-index:500;
+                background:linear-gradient(to bottom,var(--bg) 60%,transparent);
+            }
+            nav::after{
+                content:'';position:absolute;bottom:0;left:48px;right:48px;
+                height:1px;background:var(--pale);
+            }
+            .n-logo{
+                display:flex;align-items:center;gap:10px;
+                text-decoration:none;color:var(--fg);
+                font-size:14px;letter-spacing:.06em;
+                padding-right: 10px;
+            }
+            .n-links{display:flex;gap:36px;list-style:none}
+            .n-links a{
+                font-size: clamp(0.75rem, 1vw, 1rem);letter-spacing:.12em;text-transform:uppercase;;
+                text-decoration:none;color:var(--mid);
+                position:relative;transition:color .2s;
+            }
+            .n-links a::after{
+                content:'';position:absolute;bottom:-2px;left:0;
+                width:0;height:1px;background:var(--fg);transition:width .3s;
+            }
+            .n-links a:hover{color:var(--fg)}
+            .n-links a:hover::after{width:100%}
+            .n-ver{font-size:12px;color:var(--mid);letter-spacing:.08em}
+
+            /* ── HERO ── */
+            #hero{
+                min-height:100vh;
+                display:flex;align-items:center;
+                padding:100px 48px 80px;
+                position:relative;overflow:hidden;
+            }
+            .hero-grid{
+                width:100%;max-width:1120px;margin:0 auto;
+                display:grid;grid-template-columns:1fr 260px;
+                gap:60px;align-items:center;
+            }
+            .h-annot{
+                position:absolute;font-size:12px;color:var(--mid);
+                letter-spacing:.12em;font-style:italic;
+            }
+            .h-annot.tr{top:110px;right:55px}
+            .h-annot.bl{bottom:40px;left:5vw}
+
+            .h-badge{
+                display:inline-flex;align-items:center;gap:10px;
+                font-size:12px;letter-spacing:.22em;text-transform:uppercase;
+                color:var(--mid);margin-bottom:10px;
+            }
+            .h-badge::before{content:'';width:20px;height:1px;background:var(--mid);display:block}
+
+            .h-title{
+                font-family:var(--static);
+                font-style:italic;font-weight:400;
+                font-size:clamp(45px,5.5vw,70px);
+                line-height:1.05;letter-spacing:-.015em;
+                margin-bottom:10px;
+            }
+            .h-title em{font-style:italic;color:var(--mid)}
+
+            .h-sub{
+                font-family:var(--zh);
+                font-size:clamp(13px,1.6vw,18px);
+                font-weight:300;color:var(--mid);
+                letter-spacing:.18em;margin-bottom:44px;
+            }
+
+            .h-line{
+                font-size:12px;color:var(--mid);
+                border-left:1px solid var(--pale);
+                padding-left:18px;line-height:2;
+                margin-bottom:48px;
+            }
+
+            .h-ctas{display:flex;align-items:center;gap:20px}
+            .btn-p{
+                font-family:var(--mono);font-size:11px;
+                letter-spacing:.16em;text-transform:uppercase;
+                text-decoration:none;
+                background:var(--fg);color:var(--bg);
+                padding:11px 26px;
+                transition:opacity .2s;
+            }
+            .btn-p:hover{opacity:.75}
+            .btn-s{
+                font-family:var(--mono);font-size:11px;
+                letter-spacing:.14em;text-transform:uppercase;
+                text-decoration:none;color:var(--mid);
+                transition:color .2s;
+            }
+            .btn-s:hover{color:var(--fg)}
+
+            /* ── CSS 3D CUBE ── */
+            .cube-wrap{
+                width:220px;height:220px;
+                perspective:700px;
+                perspective-origin:60% 40%;
+                display:flex;align-items:center;justify-content:center;
+            }
+            .cube-scene{
+                width:130px;height:130px;
+                transform-style:preserve-3d;
+                transform:rotateX(-22deg) rotateY(30deg);
+                animation:cubeFloat 10s ease-in-out infinite;
+                position:relative;
+            }
+            @keyframes cubeFloat{
+            0%  {transform:rotateX(-22deg) rotateY(28deg) translateY(0px)}
+            50% {transform:rotateX(-26deg) rotateY(68deg) translateY(-6px)}
+            100%{transform:rotateX(-22deg) rotateY(28deg) translateY(0px)}
+            }
+            .cf{
+                position:absolute;width:130px;height:130px;
+                border:2px solid var(--fg);
+                image-rendering:pixelated;
+            }
+            .cf-top{background:#d0cbc4;transform:rotateX(90deg) translateZ(65px)}
+            .cf-bot{background:#a8a39d;transform:rotateX(-90deg) translateZ(65px)}
+            .cf-frt{background:#c8c3bc;transform:translateZ(65px)}
+            .cf-bck{background:#b8b4ae;transform:rotateY(180deg) translateZ(65px)}
+            .cf-lft{background:#bebab4;transform:rotateY(-90deg) translateZ(65px)}
+            .cf-rgt{background:#dedad4;transform:rotateY(90deg) translateZ(65px)}
+
+            /* face details */
+            .cf-frt::before{
+                content:'';position:absolute;
+                width:7px;height:7px;background:var(--fg);border-radius:50%;
+                top:36px;left:30px;
+                box-shadow:18px 5px 0 0 var(--fg);
+            }
+            .cf-frt::after{
+                content:'';position:absolute;
+                bottom:34px;left:22px;right:22px;height:3px;background:var(--fg);
+            }
+            .cf-rgt::before{
+                content:'';position:absolute;
+                top:38px;right:14px;width:2px;height:44px;
+                background:var(--fg);
+                box-shadow:
+                    5px 2px 0 var(--fg),8px 0 0 var(--fg),
+                    12px 0 0 var(--fg),15px 3px 0 var(--fg),
+                    18px 0 0 var(--fg),22px 0 0 var(--fg),
+                    26px 2px 0 var(--fg),29px 0 0 var(--fg);
+            }
+            .cf-top::before{
+                content:'';position:absolute;
+                top:28px;left:28px;right:28px;bottom:28px;
+                border:1px solid rgba(0,0,0,.12);
+            }
+
+            /* cube hover */
+            .cube-wrap:hover .cube-scene{animation-play-state:paused}
+
+            /* ── SPINNY THING ── */
+            .spin{
+                overflow:hidden;
+                background:var(--fg);padding:11px 0;
+                white-space:nowrap;
+            }
+            .spin-track{
+                display:inline-flex;
+                animation:spinRun 35s linear infinite;
+            }
+            .spin-track:hover{animation-play-state:paused}
+            .s-item{
+                font-size:11px;letter-spacing:.18em;text-transform:uppercase;
+                color:rgba(234,230,224,.75);padding:0 28px;
+            }
+            .s-sep{color:rgba(234,230,224,.25)}
+                @keyframes spinRun{
+                from{transform:translateX(0)}
+                to{transform:translateX(-50%)}
+            }
+
+            /* ── SECTIONS ── */
+            .section{padding:96px 48px;max-width:1120px;margin:0 auto}
+            .sec-label{
+                font-size:12px;letter-spacing:.26em;text-transform:uppercase;
+                color:var(--mid);margin-bottom:64px;
+                display:flex;align-items:center;gap:18px;
+            }
+            .sec-label span{opacity:.5}
+            .sec-label::after{content:'';flex:1;height:1px;background:var(--pale)}
+
+            /* ── ABOUT ── */
+            .about-grid{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start}
+            .ab-h{
+                font-family:var(--static);font-weight:400;
+                font-size:clamp(24px,3vw,42px);line-height:1.15;
+                margin-bottom:24px;
+            }
+            .ab-h em{
+                font-family:var(--static);font-style:italic;font-weight:1;
+                font-size:clamp(24px,3vw,42px);line-height:1.15;
+                margin-bottom:24px;
+            }
+            .ab-p{font-size:16px;color:var(--mid);line-height:1.95;margin-bottom:14px}
+            .ab-p em{font-style:italic;color:var(--fg)}
+
+            .meta-grid{
+                display:grid;gap:1px;
+                background:var(--pale);
+                border:1px solid var(--pale);overflow:hidden;
+            }
+            .meta-row{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--pale)}
+            .meta-cell{background:var(--bg);padding:15px 22px}
+            .mc-label{font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--mid);margin-bottom:6px}
+            .mc-val{font-size:14px}
+            .mc-val.online::before{
+                content:'● ';font-size:10px;
+                animation:blink 2s step-end infinite;
+            }
+            @keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
+
+            /* ── VIDEOS ── */
+            #videos .section{padding-top:0}
+            .vid-grid{
+                display:grid;grid-template-columns:repeat(3,1fr);
+                gap:1px;background:var(--pale);
+                border:1px solid var(--pale);overflow:hidden;
+            }
+            .vid-card{background:var(--bg);overflow:hidden;transition:background .25s}
+            .vid-card:hover{background:var(--white)}
+
+            .vid-thumb{
+                aspect-ratio:16/9;
+                background:var(--bg2);
+                position:relative;overflow:hidden;
+                display:flex;align-items:center;justify-content:center;
+            }
+            .vid-play{
+                width:38px;height:38px;
+                border:1.5px solid var(--mid);border-radius:50%;
+                display:flex;align-items:center;justify-content:center;
+                transition:border-color .25s,transform .25s;
+                position:relative;z-index:1;
+            }
+            .vid-play::after{
+                content:'';
+                border:5px solid transparent;
+                border-left:9px solid var(--mid);
+                margin-left:3px;
+                transition:border-left-color .25s;
+            }
+            .vid-card:hover .vid-play{border-color:var(--fg);transform:scale(1.08)}
+            .vid-card:hover .vid-play::after{border-left-color:var(--fg)}
+
+            .vid-bg{position:absolute;inset:0;opacity:.3}
+            .vid-info{padding:22px}
+            .vid-num{font-size:10px;letter-spacing:.16em;color:var(--mid);margin-bottom:8px}
+            .vid-ttl{font-size:14px;line-height:1.4;margin-bottom:4px}
+            .vid-zhttl{font-family:var(--zh);font-size:13px;color:var(--mid)}
+            .vid-date{font-size:11px;color:var(--light);margin-top:14px;letter-spacing:.06em}
+
+            /* video tags */
+            .vid-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
+            .tag{
+                font-size:10px;letter-spacing:.12em;text-transform:uppercase;
+                border:1px solid var(--pale);color:var(--mid);
+                padding:3px 8px;
+            }
+
+            /* ── SKILLS ── */
+            #tech .section{padding-top:0}
+            .sk-grid{
+                display:grid;grid-template-columns:repeat(4,1fr);
+                gap:1px;background:var(--pale);
+                border:1px solid var(--pale);overflow:hidden;
+                margin-bottom:40px;
+            }
+            .sk-item{
+                background:var(--bg);padding:20px 18px;
+                transition:background .2s;
+                position:relative;overflow:hidden;
+            }
+            .sk-item:hover{background:var(--fg)}
+            .sk-cat{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--mid);margin-bottom:8px;transition:color .2s}
+            .sk-name{font-size:13px;margin-bottom:14px;transition:color .2s}
+            .sk-bar{height:3px;background:var(--pale);position:relative;transition:background .2s}
+            .sk-fill{position:absolute;inset:0 auto 0 0;background:var(--fg);transition:background .2s}
+            .sk-item:hover .sk-cat{color:rgba(234,230,224,.5)}
+            .sk-item:hover .sk-name{color:var(--bg)}
+            .sk-item:hover .sk-bar{background:rgba(234,230,224,.2)}
+            .sk-item:hover .sk-fill{background:var(--bg)}
+
+            /* corner annotation */
+            .sk-item::after{
+                content:attr(data-pct);
+                position:absolute;bottom:30px;right:16px;
+                font-size:10px;color:var(--light);
+                transition:color .2s;letter-spacing:.04em;
+            }
+            .sk-item:hover::after{color:rgba(234,230,224,.3)}
+
+            /* ── CONTACT STRIP ── */
+            .contact-strip{
+                border-top:1px solid var(--pale);
+                padding:80px clamp(40px,10vw,200px);
+                display:grid;grid-template-columns:1fr auto;
+                gap:40px;align-items:center;
+                max-width:none;
+            }
+            .cs-h{
+                font-family:var(--serif);font-style:italic;font-weight:300;
+                font-size:clamp(42px,3vw,52px);
+                line-height:1.1;
+            }
+            .cs-sub{
+                font-family:var(--zh);font-size:clamp(15px,3vw,20px);font-weight:350;
+                color:var(--mid);letter-spacing:.12em;margin-top:10px;
+            }
+            .cs-links{display:flex;flex-direction:column;gap:12px;align-items:flex-end}
+            .cs-link{
+                font-size:14px;
+                letter-spacing:.14em;
+                text-transform:uppercase;
+                text-decoration:none;
+                color:var(--mid);
+                display:flex;
+                align-items:center;
+                gap:10px;
+                transition:color .2s;
+            }
+            .cs-link::after{
+                content:'→';
+                transition:transform .2s;
+            }
+            .cs-link:hover{color:var(--fg)}
+            .cs-link:hover::after{transform:translateX(4px)}
+
+            /* ── FOOTER ── */
+            footer{
+                border-top:1px solid var(--pale);
+                padding:20px 48px;
+                font-size:12px;color:var(--mid);letter-spacing:.08em;
+
+                display:flex;
+                align-items: center;
+                justify-content: space-between;
+            }
+            .f-links{display:flex;gap:24px;list-style:none}
+            .f-links a{text-decoration:none;color:var(--mid);font-size:10px;letter-spacing:.1em;text-transform:uppercase;transition:color .2s}
+            .f-links a:hover{color:var(--fg)}
+            footer span:last-child{text-align:right}
+
+            /* ── GLITCH ── */
+            .glitch{position:relative;display:inline-block}
+            .glitch::before,.glitch::after{
+                content:attr(data-text);
+                position:absolute;top:0;left:0;width:100%;height:100%;
+                font-family:inherit;font-style:inherit;font-weight:inherit;font-size:inherit;
+                overflow:hidden;pointer-events:none;
+            }
+            .glitch::before{
+                color:rgba(0,0,0,.15);left:2px;
+                clip-path:polygon(0 15%, 100% 15%, 100% 30%, 0 30%);
+                animation:gl1 8s infinite;
+            }
+            .glitch::after{
+                color:rgba(0,0,0,.1);left:-2px;
+                clip-path:polygon(0 55%, 100% 55%, 100% 70%, 0 70%);
+                animation:gl2 8s infinite 0.5s;
+            }
+            @keyframes gl1{
+                0%,85%,87%,100%{clip-path:polygon(0 0,0 0,0 0,0 0);transform:translateX(0)}
+                86%{clip-path:polygon(0 15%,100% 15%,100% 30%,0 30%);transform:translateX(-2px)}
+            }
+            @keyframes gl2{
+                0%,88%,91%,100%{clip-path:polygon(0 0,0 0,0 0,0 0);transform:translateX(0)}
+                89%{clip-path:polygon(0 55%,100% 55%,100% 70%,0 70%);transform:translateX(3px)}
+                90%{clip-path:polygon(0 40%,100% 40%,100% 55%,0 55%);transform:translateX(-1px)}
+            }
+
+            /* ── SCROLL REVEAL ── */
+            .reveal{opacity:0;transform:translateY(22px)}
+
+            /* ── SCANLINE ── */
+            .scanline-el{
+            position:absolute;
+            width:100%;height:2px;
+            background:rgba(0,0,0,.04);
+            pointer-events:none;
+            animation:scanDown 6s linear infinite;
+            }
+            @keyframes scanDown{
+            from{top:-4px}to{top:100%}
+            }
+
+            /* ── MARQUEE PAUSE ON HOVER ── */
+            .spin-track:hover{animation-play-state:paused}
+
+            /* ── RESPONSIVE ── */
+            @media(max-width:900px){
+            nav{padding:16px 24px}
+            nav::after{left:24px;right:24px}
+            .n-links{gap:20px}
+            .n-ver{display:none}
+            #hero{padding:100px 24px 60px}
+            .hero-grid{grid-template-columns:1fr;gap:40px}
+            .cube-wrap{display:none}
+            .section{padding:60px 24px}
+            .about-grid{grid-template-columns:1fr;gap:40px}
+            .vid-grid{grid-template-columns:1fr}
+            .sk-grid{grid-template-columns:repeat(2,1fr)}
+            .contact-strip{grid-template-columns:1fr;padding:60px 24px}
+            .cs-links{align-items:flex-start}
+            footer{padding:24px;flex-direction:column;gap:14px;text-align:center}
+            .h-annot{display:none}
+            }
+        </style>
+    </head>
+    <body>
+
+        <!-- cursor -->
+        <div id="c-ring"></div>
+        <div id="c-dot"></div>
+
+        <!-- nav -->
+        <nav>
+        <a href="#" class="n-logo">
+            <img src="frame.png" alt="frame" width="30" height="30" flex-shrink="0">
+            qubixal
+        </a>
+        <ul class="n-links">
+            <li><a href="#about">About / 关于</a></li>
+            <li><a href="#videos">Videos / 视频</a></li>
+            <li><a href="#tech">Tech / 技术</a></li>
+            <li><a href="#contact">Contact / 联系</a></li>
+        </ul>
+        <span class="n-ver" id="ver-num">v0.1.0</span>
+        </nav>
+
+        <!-- hero -->
+        <section id="hero">
+        <div class="scanline-el"></div>
+        <span class="h-annot tr">xx.xx</span>
+        <span class="h-annot bl">sys: online // 系统在线</span>
+
+        <div class="hero-grid">
+            <div class="hero-text">
+            <div class="h-badge reveal">// QUBIXAL · Q比工作室</div>
+            <h1 class="h-title reveal">
+                <span class="glitch" data-text="making">making</span><br>
+                <em>// uselessly impressive<br>
+                impressively useless //</em><br>
+                things
+            </h1>
+            <p class="h-sub reveal">做些 // 华而不实 - 实而不华 // 的事</p>
+            <p class="h-line reveal">
+                专业方块 · 独立创作者 · 科技爱好者<br>
+                Professional Cube · Independent Creator · Tech Enthusiast
+            </p>
+            <div class="h-ctas reveal">
+                <a href="#videos" class="btn-p">View Work / 查看作品</a>
+                <a href="https://youtube.com/@qubixalYT" target="_blank" class="btn-s">→ @qubixalYT</a>
+            </div>
+            </div>
+
+            <div class="cube-wrap reveal">
+            <div class="cube-scene" id="cube">
+                <div class="cf cf-top"></div>
+                <div class="cf cf-bot"></div>
+                <div class="cf cf-frt"></div>
+                <div class="cf cf-bck"></div>
+                <div class="cf cf-lft"></div>
+                <div class="cf cf-rgt"></div>
+            </div>
+            </div>
+        </div>
+        </section>
+
+        <!-- the thing that spins idk what to call it -->
+        <div class="spin">
+        <div class="spin-track" id="spin">
+            <span class="s-item">Emerging Tech</span><span class="s-item s-sep">///</span>
+            <span class="s-item">Local LLM</span><span class="s-item s-sep">///</span>
+            <span class="s-item">Silicon (👅)</span><span class="s-item s-sep">///</span>
+            <span class="s-item">Hardware</span><span class="s-item s-sep">///</span>
+            <span class="s-item">Software/OS</span><span class="s-item s-sep">///</span>
+            <span class="s-item">WebApp</span><span class="s-item s-sep">///</span>
+            <span class="s-item">Bad Frontend UIs</span><span class="s-item s-sep">///</span>
+            <span class="s-item">新兴科技</span><span class="s-item s-sep">///</span>
+            <span class="s-item">本地LLM部署</span><span class="s-item s-sep">///</span>
+            <span class="s-item">硅 (好吃)</span><span class="s-item s-sep">///</span>
+            <span class="s-item">硬件</span><span class="s-item s-sep">///</span>
+            <span class="s-item">软件/OS</span><span class="s-item s-sep">///</span>
+            <span class="s-item">网页应用</span><span class="s-item s-sep">///</span>
+            <span class="s-item">垃圾UI设计</span><span class="s-item s-sep">///</span>
+
+            <span class="s-item">Emerging Tech</span><span class="s-item s-sep">///</span>
+            <span class="s-item">Local LLM</span><span class="s-item s-sep">///</span>
+            <span class="s-item">Silicon (👅)</span><span class="s-item s-sep">///</span>
+            <span class="s-item">Hardware</span><span class="s-item s-sep">///</span>
+            <span class="s-item">Software/OS</span><span class="s-item s-sep">///</span>
+            <span class="s-item">WebApp</span><span class="s-item s-sep">///</span>
+            <span class="s-item">Bad Frontend UIs</span><span class="s-item s-sep">///</span>
+            <span class="s-item">新兴科技</span><span class="s-item s-sep">///</span>
+            <span class="s-item">本地LLM部署</span><span class="s-item s-sep">///</span>
+            <span class="s-item">硅 (好吃)</span><span class="s-item s-sep">///</span>
+            <span class="s-item">硬件</span><span class="s-item s-sep">///</span>
+            <span class="s-item">软件/OS</span><span class="s-item s-sep">///</span>
+            <span class="s-item">网页应用</span><span class="s-item s-sep">///</span>
+            <span class="s-item">垃圾UI设计</span><span class="s-item s-sep">///</span>
+        </div>
+        </div>
+
+        <!-- about -->
+        <div id="about" style="border-top:1px solid var(--pale)">
+        <div class="section">
+            <div class="sec-label reveal"><span>01</span> About / 关于</div>
+            <div class="about-grid">
+            <div>
+                <h2 class="ab-h reveal">A builder of things<br><em>no one asked for</em></h2>
+                <p class="ab-p reveal">
+                A cube, fuelled by procrastination, that likes to build stuff.
+                Every idea starts with the same question: <em>what if this existed?</em>
+                </p>
+                <p class="ab-p reveal">
+                一位想做些点东西(+患有拖延症)的正方体<br>
+                每个主意都来自于一个问题：<em>这东西存在会多好呢～?</em>
+                </p>
+            </div>
+            <div class="meta-grid reveal">
+                <div class="meta-row">
+                    <div class="meta-cell">
+                        <div class="mc-label">Location / 位置</div>
+                        <div class="mc-val">Earth (mostly)</div>
+                    </div>
+                    <div class="meta-cell">
+                        <div class="mc-label">Focus / 专注</div>
+                        <div class="mc-val">Technology</div>
+                    </div>
+                </div>
+                <div class="meta-row">
+                    <div class="meta-cell">
+                        <div class="mc-label">YouTube</div>
+                        <div class="mc-val">@qubixalYT</div>
+                    </div>
+                    <div class="meta-cell">
+                        <div class="mc-label">Bilibili / B站</div>
+                        <div class="mc-val">q比工作室</div>
+                    </div>
+                </div>
+                <div class="meta-row">
+                    <div class="meta-cell">
+                        <div class="mc-label">Status / 状态</div>
+                        <div class="mc-val online">Building</div>
+                    </div>
+                    <div class="meta-cell">
+                        <div class="mc-label">Next Upload</div>
+                        <div class="mc-val" id="next-up">when i find my password</div>
+                    </div>
+                </div>
+                <div class="meta-row">
+                    <div class="meta-cell" style="grid-column:1/-1">
+                        <div class="mc-label">Bilibili / B站</div>
+                        <div class="mc-val">q比工作室</div>
+                    </div>
+                </div>
+            </div>
+            </div>
+        </div>
+        </div>
+
+        <!-- videos -->
+        <div id="videos" style="border-top:1px solid var(--pale)">
+            <div class="section" style="padding-top:96px">
+                <div class="sec-label reveal"><span>02</span> Videos / 视频</div>
+                <div class="vid-grid reveal">
+
+                <div class="vid-card">
+                    <div class="vid-thumb">
+                    <svg class="vid-bg" viewBox="0 0 320 180" preserveAspectRatio="none">
+                        <defs>
+                        <pattern id="pg1" x="0" y="0" width="24" height="24" patternUnits="userSpaceOnUse">
+                            <path d="M24 0L0 0 0 24" fill="none" stroke="#141210" stroke-width=".6"/>
+                        </pattern>
+                        </defs>
+                        <rect width="320" height="180" fill="url(#pg1)"/>
+                    </svg>
+                    <div class="vid-play"></div>
+                    </div>
+                    <div class="vid-info">
+                    <div class="vid-num">// 001</div>
+                    <div class="vid-ttl">Coming soon...?</div>
+                    <div class="vid-zhttl">即将上线？</div>
+                    <div class="vid-tags">
+                        <span class="tag">Apple Macbook</span>
+                        <span class="tag">PCB</span>
+                        <span class="tag">First Video</span>
+                    </div>
+                    <div class="vid-date">Coming Soon · 即将上线</div>
+                    </div>
+                </div>
+                <!-- add later as i go on... -->
+                <!-- wait shouldn't i automate this? -->
+                </div>
+            </div>
+        </div>
+
+        <!-- tech -->
+        <div id="tech" style="border-top:1px solid var(--pale)">
+            <div class="section" style="padding-top:96px">
+                <div class="sec-label reveal"><span>03</span> Tech Stack / 技术栈</div>
+                <div class="sk-grid reveal">
+                <div class="sk-item" data-pct="58%">
+                    <div class="sk-cat">Code / 代码</div>
+                    <div class="sk-name">Python</div>
+                    <div class="sk-bar"><div class="sk-fill" style="width:58%"></div></div>
+                </div>
+                <div class="sk-item" data-pct="1%">
+                    <div class="sk-cat">Code / 代码</div>
+                    <div class="sk-name">Typescript / React</div>
+                    <div class="sk-bar"><div class="sk-fill" style="width:1%"></div></div>
+                </div>
+                <div class="sk-item" data-pct="80%">
+                    <div class="sk-cat">CAD / 制图</div>
+                    <div class="sk-name">Fusion</div>
+                    <div class="sk-bar"><div class="sk-fill" style="width:80%"></div></div>
+                </div>
+                <div class="sk-item" data-pct="25%">
+                    <div class="sk-cat">3D / Motion</div>
+                    <div class="sk-name">Live2D / VRoid</div>
+                    <div class="sk-bar"><div class="sk-fill" style="width:25%"></div></div>
+                </div>
+                <div class="sk-item" data-pct="60%">
+                    <div class="sk-cat">Hardware / 硬件</div>
+                    <div class="sk-name">Computing</div>
+                    <div class="sk-bar"><div class="sk-fill" style="width:60%"></div></div>
+                </div>
+                <div class="sk-item" data-pct="72%">
+                    <div class="sk-cat">Hardware / 硬件</div>
+                    <div class="sk-name">SBC / PC</div>
+                    <div class="sk-bar"><div class="sk-fill" style="width:72%"></div></div>
+                </div>
+                <div class="sk-item" data-pct="40%">
+                    <div class="sk-cat">Video Editing</div>
+                    <div class="sk-name">Davinci Resolve</div>
+                    <div class="sk-bar"><div class="sk-fill" style="width:40%"></div></div>
+                </div>
+                <div class="sk-item" data-pct="60%">
+                    <div class="sk-cat">AI / ML</div>
+                    <div class="sk-name">Basics</div>
+                    <div class="sk-bar"><div class="sk-fill" style="width:60%"></div></div>
+                </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- contact -->
+        <div id="contact" style="border-top:1px solid var(--pale)">
+            <div class="contact-strip reveal">
+                <div>
+                    <h2 class="cs-h">Let's make something<br><em>impressive<s>ly useless</s>.</em></h2>
+                    <p class="cs-sub">一起制造精彩<s>的无用</s>之物。</p>
+                </div>
+                <div class="cs-links">
+                    <a href="https://youtube.com/@qubixalYT" target="_blank" class="cs-link">YouTube @qubixalYT</a>
+                    <a href="https://space.bilibili.com/3706941203286600" target="_blank" class="cs-link">Bilibili q比工作室</a>
+                    <a href="https://github.com/qubixal" target="_blank" class="cs-link">GitHub</a>
+                    <a href="https://x.com/qubixalYT" target="_blank" class="cs-link">X</a>
+                    <a href="mailto:qubixalYT@gmail.com" class="cs-link">Email / 邮件</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- footer -->
+        <footer>
+            <span>© 2026 qubixal · q比工作室</span>
+            <ul class="f-links">
+                <li><a href="https://youtube.com/@qubixalYT" target="_blank">YouTube</a></li>
+                <li><a href="https://space.bilibili.com/3706941203286600" target="_blank">Bilibili</a></li>
+                <li><a href="https://github.com/qubixal" target="_blank">GitHub</a></li>
+            </ul>
+            <span>// making things since yesterday</span>
+        </footer>
+
+        <script>
+            // ── CURSOR ──
+            const dot = document.getElementById('c-dot');
+            const ring = document.getElementById('c-ring');
+            let mx=0,my=0,rx=0,ry=0;
+            document.addEventListener('mousemove',e=>{
+            mx=e.clientX; my=e.clientY;
+            dot.style.left=mx+'px'; dot.style.top=my+'px';
+            });
+            (function animRing(){
+            rx+=(mx-rx)*0.11; ry+=(my-ry)*0.11;
+            ring.style.left=rx+'px'; ring.style.top=ry+'px';
+            requestAnimationFrame(animRing);
+            })();
+            document.querySelectorAll('a,button').forEach(el=>{
+            el.addEventListener('mouseenter',()=>document.body.classList.add('hovering'));
+            el.addEventListener('mouseleave',()=>document.body.classList.remove('hovering'));
+            });
+
+            // ── GSAP SCROLL REVEALS ──
+            gsap.registerPlugin(ScrollTrigger);
+            document.querySelectorAll('.reveal').forEach((el,i)=>{
+            const inHero = el.closest('#hero');
+            gsap.fromTo(el,
+                {opacity:0,y:22},
+                {
+                opacity:1,y:0,
+                duration:.75,
+                ease:'power2.out',
+                delay: inHero ? i*0.1 : 0,
+                scrollTrigger: inHero ? null : {
+                    trigger:el, start:'top 90%', once:true
+                }
+                }
+            );
+            });
+
+            // ── CUBE MOUSE PARALLAX ──
+            const cube = document.getElementById('cube');
+            if(cube){
+            document.addEventListener('mousemove',e=>{
+                const nx=(e.clientX/window.innerWidth-.5)*40;
+                const ny=(e.clientY/window.innerHeight-.5)*20;
+                cube.style.transform=`rotateX(${-22+ny*-.4}deg) rotateY(${30+nx}deg) translateY(0px)`;
+            });
+            }
+
+            // ── Version Number ──
+            const now = new Date();
+            document.getElementById('ver-num').textContent =
+            `v0.${now.getFullYear()-2026}.${String(now.getMonth()+1).padStart(2,'0')}`;
+
+            // ── if i ever want to announce an upload ──
+            // function calcNext(){
+            //     const n=new Date();
+            //     const nxt=new Date(2026, 4, 22, 7, 0, 0, 0); // 2026 - 05 (00 is Jan) - 22 - 07:00:00
+            //     const ms = nxt - n;
+            //     if (ms <= 0) {
+            //         document.getElementById('next-up').textContent = "Recently Uploaded!";
+            //         return;
+            //     }
+            //     const dv = Math.floor(ms / 86400000);
+            //     const hv = Math.floor((ms % 86400000) / 3600000);
+            //     const mv = Math.floor((ms % 86400000) / 60000) % 60;
+            //     document.getElementById('next-up').textContent = `~${dv}d ${hv}h ${mv}m`;
+            // }
+            // calcNext(); setInterval(calcNext,60000);
+
+            // ── Skill bar gaining animation ──
+            document.querySelectorAll('.sk-fill').forEach(bar=>{
+            const w=bar.style.width;
+            bar.style.width='0';
+            ScrollTrigger.create({
+                trigger:bar, start:'top 88%', once:true,
+                onEnter:()=>{
+                gsap.to(bar,{width:w,duration:1.1,ease:'power2.out',delay:Math.random()*.3});
+                }
+            });
+            });
+
+            // ── NAV BACKGROUND ON SCROLL ──
+            window.addEventListener('scroll',()=>{
+            const nav=document.querySelector('nav');
+            if(window.scrollY>60){
+                nav.style.background='var(--bg)';
+                nav.style.boxShadow='0 1px 0 var(--pale)';
+            } else {
+                nav.style.background='linear-gradient(to bottom,var(--bg) 60%,transparent)';
+                nav.style.boxShadow='none';
+            }
+            });
+        </script>
+    </body>
+</html>
