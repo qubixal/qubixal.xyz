@@ -121,6 +121,8 @@
                 font-size:clamp(45px,5.5vw,70px);
                 line-height:1.05;letter-spacing:-.015em;
                 margin-bottom:10px;
+                display:block;
+                white-space:nowrap;
             }
             .h-title em{font-style:italic;color:var(--mid)}
 
@@ -157,65 +159,30 @@
             .btn-s:hover{color:var(--fg)}
 
             /* ── CSS 3D CUBE ── */
-            .cube-wrap{
-                width:220px;height:220px;
-                perspective:700px;
-                perspective-origin:60% 40%;
-                display:flex;align-items:center;justify-content:center;
-            }
-            .cube-scene{
-                width:130px;height:130px;
-                transform-style:preserve-3d;
-                transform:rotateX(-22deg) rotateY(30deg);
-                animation:cubeFloat 10s ease-in-out infinite;
-                position:relative;
-            }
-            @keyframes cubeFloat{
-            0%  {transform:rotateX(-22deg) rotateY(28deg) translateY(0px)}
-            50% {transform:rotateX(-26deg) rotateY(68deg) translateY(-6px)}
-            100%{transform:rotateX(-22deg) rotateY(28deg) translateY(0px)}
-            }
-            .cf{
-                position:absolute;width:130px;height:130px;
-                border:2px solid var(--fg);
-                image-rendering:pixelated;
-            }
-            .cf-top{background:#d0cbc4;transform:rotateX(90deg) translateZ(65px)}
-            .cf-bot{background:#a8a39d;transform:rotateX(-90deg) translateZ(65px)}
-            .cf-frt{background:#c8c3bc;transform:translateZ(65px)}
-            .cf-bck{background:#b8b4ae;transform:rotateY(180deg) translateZ(65px)}
-            .cf-lft{background:#bebab4;transform:rotateY(-90deg) translateZ(65px)}
-            .cf-rgt{background:#dedad4;transform:rotateY(90deg) translateZ(65px)}
-
-            /* face details */
-            .cf-frt::before{
-                content:'';position:absolute;
-                width:7px;height:7px;background:var(--fg);border-radius:50%;
-                top:36px;left:30px;
-                box-shadow:18px 5px 0 0 var(--fg);
-            }
-            .cf-frt::after{
-                content:'';position:absolute;
-                bottom:34px;left:22px;right:22px;height:3px;background:var(--fg);
-            }
-            .cf-rgt::before{
-                content:'';position:absolute;
-                top:38px;right:14px;width:2px;height:44px;
-                background:var(--fg);
-                box-shadow:
-                    5px 2px 0 var(--fg),8px 0 0 var(--fg),
-                    12px 0 0 var(--fg),15px 3px 0 var(--fg),
-                    18px 0 0 var(--fg),22px 0 0 var(--fg),
-                    26px 2px 0 var(--fg),29px 0 0 var(--fg);
-            }
-            .cf-top::before{
-                content:'';position:absolute;
-                top:28px;left:28px;right:28px;bottom:28px;
-                border:1px solid rgba(0,0,0,.12);
+            .cube-wrap {
+                width: clamp(200px, 30vw, 500px);
+                height: clamp(260px, 34vw, 520px);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                max-width: 100%;
             }
 
-            /* cube hover */
-            .cube-wrap:hover .cube-scene{animation-play-state:paused}
+            model-viewer {
+                width: 100%;
+                height: 100%;
+                display: block;
+                animation: floatBounce 10s ease-in-out infinite;
+                will-change: transform;
+            }
+            @keyframes floatBounce {
+                0%   { transform: translateY(0px); }
+                50%  { transform: translateY(-6px); }
+                100% { transform: translateY(0px); }
+            }
+            model-viewer:hover {
+                animation-play-state: paused;
+            }
 
             /* ── SPINNY THING ── */
             .spin{
@@ -409,34 +376,6 @@
             .f-links a:hover{color:var(--fg)}
             footer span:last-child{text-align:right}
 
-            /* ── GLITCH ── */
-            .glitch{position:relative;display:inline-block}
-            .glitch::before,.glitch::after{
-                content:attr(data-text);
-                position:absolute;top:0;left:0;width:100%;height:100%;
-                font-family:inherit;font-style:inherit;font-weight:inherit;font-size:inherit;
-                overflow:hidden;pointer-events:none;
-            }
-            .glitch::before{
-                color:rgba(0,0,0,.15);left:2px;
-                clip-path:polygon(0 15%, 100% 15%, 100% 30%, 0 30%);
-                animation:gl1 8s infinite;
-            }
-            .glitch::after{
-                color:rgba(0,0,0,.1);left:-2px;
-                clip-path:polygon(0 55%, 100% 55%, 100% 70%, 0 70%);
-                animation:gl2 8s infinite 0.5s;
-            }
-            @keyframes gl1{
-                0%,85%,87%,100%{clip-path:polygon(0 0,0 0,0 0,0 0);transform:translateX(0)}
-                86%{clip-path:polygon(0 15%,100% 15%,100% 30%,0 30%);transform:translateX(-2px)}
-            }
-            @keyframes gl2{
-                0%,88%,91%,100%{clip-path:polygon(0 0,0 0,0 0,0 0);transform:translateX(0)}
-                89%{clip-path:polygon(0 55%,100% 55%,100% 70%,0 70%);transform:translateX(3px)}
-                90%{clip-path:polygon(0 40%,100% 40%,100% 55%,0 55%);transform:translateX(-1px)}
-            }
-
             /* ── SCROLL REVEAL ── */
             .reveal{opacity:0;transform:translateY(22px)}
 
@@ -485,7 +424,7 @@
         <nav>
         <a href="#" class="n-logo">
             <img src="frame.png" alt="frame" width="30" height="30" flex-shrink="0">
-            qubixal
+            qubixal.yt
         </a>
         <ul class="n-links">
             <li><a href="#about">About / 关于</a></li>
@@ -506,12 +445,29 @@
             <div class="hero-text">
             <div class="h-badge reveal">// QUBIXAL · Q比工作室</div>
             <h1 class="h-title reveal">
-                <span class="glitch" data-text="making">making</span><br>
-                <em>// uselessly impressive<br>
-                impressively useless //</em><br>
-                things
+                <span id="hero-line-1" class="decode-text glitch" data-final="making">
+                    making
+                </span><br>
+                <em>
+                    <span id="hero-line-2" class="decode-text" data-final="// uselessly impressive">
+                        // uselessly impressive
+                    </span><br>
+
+                    <span id="hero-line-3" class="decode-text" data-final="impressively useless //">
+                        impressively useless //
+                    </span><br>
+                </em>
+                <span id="hero-line-4" class="decode-text" data-final="things">
+                    things
+                </span>
             </h1>
-            <p class="h-sub reveal">做些 // 华而不实 - 实而不华 // 的事</p>
+
+            <p id="hero-sub"
+            class="h-sub reveal decode-text"
+            data-final="做些 // 华而不实 - 实而不华 // 的事">
+                做些 // 华而不实 - 实而不华 // 的事
+            </p>
+
             <p class="h-line reveal">
                 专业方块 · 独立创作者 · 科技爱好者<br>
                 Professional Cube · Independent Creator · Tech Enthusiast
@@ -523,14 +479,20 @@
             </div>
 
             <div class="cube-wrap reveal">
-            <div class="cube-scene" id="cube">
-                <div class="cf cf-top"></div>
-                <div class="cf cf-bot"></div>
-                <div class="cf cf-frt"></div>
-                <div class="cf cf-bck"></div>
-                <div class="cf cf-lft"></div>
-                <div class="cf cf-rgt"></div>
-            </div>
+                <model-viewer
+                    id="mv"
+                    src="cube.glb"
+                    alt="(q)ube"
+                    auto-rotate
+                    rotation-per-second="30deg/s"
+                    camera-controls
+                    disable-zoom
+                    camera-target="0m 0m 0m"
+                    min-camera-orbit="0 0 7m"
+                    max-camera-orbit="0 0 8m"
+                    exposure="1.05"
+                    shadow-intensity="1">
+                </model-viewer>
             </div>
         </div>
         </section>
@@ -575,55 +537,49 @@
         <div class="section">
             <div class="sec-label reveal"><span>01</span> About / 关于</div>
             <div class="about-grid">
-            <div>
-                <h2 class="ab-h reveal">A builder of things<br><em>no one asked for</em></h2>
-                <p class="ab-p reveal">
-                A cube, fuelled by procrastination, that likes to build stuff.
-                Every idea starts with the same question: <em>what if this existed?</em>
-                </p>
-                <p class="ab-p reveal">
-                一位想做些点东西(+患有拖延症)的正方体<br>
-                每个主意都来自于一个问题：<em>这东西存在会多好呢～?</em>
-                </p>
-            </div>
-            <div class="meta-grid reveal">
-                <div class="meta-row">
-                    <div class="meta-cell">
-                        <div class="mc-label">Location / 位置</div>
-                        <div class="mc-val">Earth (mostly)</div>
+                <div>
+                    <h2 class="ab-h reveal">A builder of things<br><em>no one asked for</em></h2>
+                    <p class="ab-p reveal">
+                    A cube, fuelled by procrastination, that likes to build stuff.
+                    Every idea starts with the same question: <em>what if this existed?</em>
+                    </p>
+                    <p class="ab-p reveal">
+                    一位想做些点东西(+患有拖延症)的正方体<br>
+                    每个主意都来自于一个问题：<em>这东西存在会多好呢～?</em>
+                    </p>
+                </div>
+                <div class="meta-grid reveal">
+                    <div class="meta-row">
+                        <div class="meta-cell">
+                            <div class="mc-label">Location / 位置</div>
+                            <div class="mc-val">Earth (mostly)</div>
+                        </div>
+                        <div class="meta-cell">
+                            <div class="mc-label">Focus / 专注</div>
+                            <div class="mc-val">Technology</div>
+                        </div>
                     </div>
-                    <div class="meta-cell">
-                        <div class="mc-label">Focus / 专注</div>
-                        <div class="mc-val">Technology</div>
+                    <div class="meta-row">
+                        <div class="meta-cell">
+                            <div class="mc-label">YouTube</div>
+                            <div class="mc-val">@qubixalYT</div>
+                        </div>
+                        <div class="meta-cell">
+                            <div class="mc-label">Bilibili / B站</div>
+                            <div class="mc-val">q比工作室</div>
+                        </div>
+                    </div>
+                    <div class="meta-row">
+                        <div class="meta-cell">
+                            <div class="mc-label">Status / 状态</div>
+                            <div class="mc-val online">Building</div>
+                        </div>
+                        <div class="meta-cell">
+                            <div class="mc-label">Next Upload</div>
+                            <div class="mc-val" id="next-up">when i find my password</div>
+                        </div>
                     </div>
                 </div>
-                <div class="meta-row">
-                    <div class="meta-cell">
-                        <div class="mc-label">YouTube</div>
-                        <div class="mc-val">@qubixalYT</div>
-                    </div>
-                    <div class="meta-cell">
-                        <div class="mc-label">Bilibili / B站</div>
-                        <div class="mc-val">q比工作室</div>
-                    </div>
-                </div>
-                <div class="meta-row">
-                    <div class="meta-cell">
-                        <div class="mc-label">Status / 状态</div>
-                        <div class="mc-val online">Building</div>
-                    </div>
-                    <div class="meta-cell">
-                        <div class="mc-label">Next Upload</div>
-                        <div class="mc-val" id="next-up">when i find my password</div>
-                    </div>
-                </div>
-                <div class="meta-row">
-                    <div class="meta-cell" style="grid-column:1/-1">
-                        <div class="mc-label">Bilibili / B站</div>
-                        <div class="mc-val">q比工作室</div>
-                    </div>
-                </div>
-            </div>
             </div>
         </div>
         </div>
@@ -718,7 +674,7 @@
             <div class="contact-strip reveal">
                 <div>
                     <h2 class="cs-h">Let's make something<br><em>impressive<s>ly useless</s>.</em></h2>
-                    <p class="cs-sub">一起制造精彩<s>的无用</s>之物。</p>
+                    <p class="cs-sub">一起制造精彩<s>而无用</s>之物。</p>
                 </div>
                 <div class="cs-links">
                     <a href="https://youtube.com/@qubixalYT" target="_blank" class="cs-link">YouTube @qubixalYT</a>
@@ -741,6 +697,7 @@
             <span>// making things since yesterday</span>
         </footer>
 
+        <!-- SCRIPT -->
         <script>
             // ── CURSOR ──
             const dot = document.getElementById('c-dot');
@@ -791,7 +748,7 @@
             // ── Version Number ──
             const now = new Date();
             document.getElementById('ver-num').textContent =
-            `v0.${now.getFullYear()-2026}.${String(now.getMonth()+1).padStart(2,'0')}`;
+            `v0.${now.getFullYear()-2000}.${String(now.getMonth()+1).padStart(2,'0')}`;
 
             // ── if i ever want to announce an upload ──
             // function calcNext(){
@@ -808,6 +765,52 @@
             //     document.getElementById('next-up').textContent = `~${dv}d ${hv}h ${mv}m`;
             // }
             // calcNext(); setInterval(calcNext,60000);
+            
+            // HERO SCRAMBLE
+
+            const SCRAMBLE_CHARS =
+            "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789<>[]{}\\/|!?+-=*#%&";
+
+            const CHINESE_SCRAMBLE =
+            "你嫌贵我还嫌贵呢！到底买不？这瓜皮是金子做的";
+
+            function decodeElement(el, delay = 0) {
+                const finalText = el.dataset.final;
+                // hide text
+                el.textContent = "";
+                setTimeout(() => {
+                    let iteration = 0;
+                    const interval = setInterval(() => {
+                        el.textContent = finalText
+                            .split("")
+                            .map((char, index) => {
+                                if (index < iteration)
+                                    return finalText[index];
+                                if (char === " ")
+                                    return " ";
+                                if (/[\u4e00-\u9fff]/.test(char)) {
+                                    return CHINESE_SCRAMBLE[
+                                        Math.floor(Math.random() * CHINESE_SCRAMBLE.length)
+                                    ];
+                                }
+                                return SCRAMBLE_CHARS[
+                                    Math.floor(Math.random() * SCRAMBLE_CHARS.length)
+                                ];
+                            })
+                            .join("");
+                        iteration += 0.45;
+                        if (iteration >= finalText.length) {
+                            el.textContent = finalText;
+                            clearInterval(interval);
+                        }
+                    }, 20);
+                }, delay);
+            }
+            window.addEventListener("load", () => {
+            decodeElement(document.getElementById("hero-line-2"), 2);
+            decodeElement(document.getElementById("hero-line-3"), 2);
+            decodeElement(document.getElementById("hero-sub"), 2);
+        });
 
             // ── Skill bar gaining animation ──
             document.querySelectorAll('.sk-fill').forEach(bar=>{
@@ -832,6 +835,21 @@
                 nav.style.boxShadow='none';
             }
             });
+
+            // ── MODEL-VIEWER: lock camera target and tweak lighting
+            (function(){
+                const mv = document.getElementById('mv');
+                if(!mv) return;
+                // ensure the camera target stays at origin so the model rotates in place
+                mv.cameraTarget = '0m 0m 0m';
+                mv.addEventListener('camera-change', ()=>{
+                    // re-assert the locked target (prevents panning changes)
+                    try{ mv.cameraTarget = '0m 0m 0m'; }catch(e){}
+                });
+                // gentle exposure tweak and stronger shadows for better visibility
+                try{ mv.exposure = 0.8; mv.shadowIntensity = 2; }catch(e){}
+            })();
         </script>
+        <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.4.0/model-viewer.min.js"></script>
     </body>
 </html>
