@@ -1,13 +1,21 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
+    <!--
+        qubixal.xyz
+        by qubixal studio · Q比工作室
+        Professional Cube · 独立创作者 · 科技爱好者
+
+        holy heck how is this 1000 lines
+    -->
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>qubixal.yt · qb网</title>
+        <title>qubixal.xyz · qb网</title>
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Crimson+Pro:ital,wght@1,300;1,400;1,600&family=Noto+Serif+SC:wght@300;400&display=swap" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="style.css">
         <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
         <style>
@@ -28,66 +36,6 @@
             }
 
             html{scroll-behavior:smooth}
-
-            body{
-                background:var(--bg);
-                color:var(--fg);
-                font-family:var(--mono);
-                font-size:14px;
-                line-height:1.6;
-                cursor:none;
-                overflow-x:hidden;
-            }
-
-            /* noise overlay */
-            body::after{
-                content:'';
-                position:fixed;
-                inset:0;
-                pointer-events:none;
-                z-index:9000;
-                opacity:.025;
-                background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)'/%3E%3C/svg%3E");
-            }
-
-            /* ── CURSOR ── */
-            #c-ring,#c-dot{position:fixed;top:0;left:0;pointer-events:none;z-index:9999;transform:translate(-50%,-50%)}
-            #c-dot{width:5px;height:5px;background:var(--fg);border-radius:50%;transition:transform .1s}
-            #c-ring{width:30px;height:30px;border:1px solid var(--fg);border-radius:50%;transition:width .25s,height .25s,opacity .25s}
-            body.hovering #c-ring{width:46px;height:46px}
-            body.hovering #c-dot{transform:translate(-50%,-50%) scale(0)}
-
-            /* ── NAV ── */
-            nav{
-                position:fixed;top:0;left:0;right:0;
-                display:flex;align-items:center;justify-content:space-between;
-                padding:18px 48px;
-                z-index:500;
-                background:linear-gradient(to bottom,var(--bg) 60%,transparent);
-            }
-            nav::after{
-                content:'';position:absolute;bottom:0;left:48px;right:48px;
-                height:1px;background:var(--pale);
-            }
-            .n-logo{
-                display:flex;align-items:center;gap:10px;
-                text-decoration:none;color:var(--fg);
-                font-size:14px;letter-spacing:.06em;
-                padding-right: 10px;
-            }
-            .n-links{display:flex;gap:36px;list-style:none}
-            .n-links a{
-                font-size: clamp(0.75rem, 1vw, 1rem);letter-spacing:.12em;text-transform:uppercase;;
-                text-decoration:none;color:var(--mid);
-                position:relative;transition:color .2s;
-            }
-            .n-links a::after{
-                content:'';position:absolute;bottom:-2px;left:0;
-                width:0;height:1px;background:var(--fg);transition:width .3s;
-            }
-            .n-links a:hover{color:var(--fg)}
-            .n-links a:hover::after{width:100%}
-            .n-ver{font-size:12px;color:var(--mid);letter-spacing:.08em}
 
             /* ── HERO ── */
             #hero{
@@ -111,14 +59,14 @@
             .h-badge{
                 display:inline-flex;align-items:center;gap:10px;
                 font-size:12px;letter-spacing:.22em;text-transform:uppercase;
-                color:var(--mid);margin-bottom:10px;
+                color:var(--mid);margin-bottom:14px;
             }
             .h-badge::before{content:'';width:20px;height:1px;background:var(--mid);display:block}
 
             .h-title{
                 font-family:var(--static);
                 font-style:italic;font-weight:400;
-                font-size:clamp(45px,5.5vw,70px);
+                font-size:clamp(30px,5.5vw,65px);
                 line-height:1.05;letter-spacing:-.015em;
                 margin-bottom:10px;
                 display:block;
@@ -128,7 +76,7 @@
 
             .h-sub{
                 font-family:var(--zh);
-                font-size:clamp(13px,1.6vw,18px);
+                font-size:clamp(15px,1.6vw,20px);
                 font-weight:300;color:var(--mid);
                 letter-spacing:.18em;margin-bottom:44px;
             }
@@ -140,22 +88,10 @@
                 margin-bottom:48px;
             }
 
-            .h-ctas{display:flex;align-items:center;gap:20px}
-            .btn-p{
-                font-family:var(--mono);font-size:11px;
-                letter-spacing:.16em;text-transform:uppercase;
-                text-decoration:none;
-                background:var(--fg);color:var(--bg);
-                padding:11px 26px;
-                transition:opacity .2s;
-            }
+            .h-ctas{display:flex;align-items:center;gap:20px;flex-wrap:wrap}
+            .btn-p{font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;text-decoration:none;background:var(--fg);color:var(--bg);padding:11px 26px;transition:opacity .2s;white-space:nowrap}
             .btn-p:hover{opacity:.75}
-            .btn-s{
-                font-family:var(--mono);font-size:11px;
-                letter-spacing:.14em;text-transform:uppercase;
-                text-decoration:none;color:var(--mid);
-                transition:color .2s;
-            }
+            .btn-s{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;text-decoration:none;color:var(--mid);transition:color .2s;white-space:nowrap}
             .btn-s:hover{color:var(--fg)}
 
             /* ── CSS 3D CUBE ── */
@@ -167,7 +103,6 @@
                 justify-content: center;
                 max-width: 100%;
             }
-
             model-viewer {
                 width: 100%;
                 height: 100%;
@@ -180,9 +115,7 @@
                 50%  { transform: translateY(-6px); }
                 100% { transform: translateY(0px); }
             }
-            model-viewer:hover {
-                animation-play-state: paused;
-            }
+            model-viewer:hover {animation-play-state: paused;}
 
             /* ── SPINNY THING ── */
             .spin{
@@ -194,13 +127,14 @@
                 display:inline-flex;
                 animation:spinRun 35s linear infinite;
             }
-            .spin-track:hover{animation-play-state:paused}
             .s-item{
                 font-size:11px;letter-spacing:.18em;text-transform:uppercase;
                 color:rgba(234,230,224,.75);padding:0 28px;
             }
             .s-sep{color:rgba(234,230,224,.25)}
-                @keyframes spinRun{
+            html[data-theme="dark"] .s-item{color:rgba(87,78,65,.8)}
+            html[data-theme="dark"] .s-sep{color:rgba(87,78,65,.3)}
+            @keyframes spinRun{
                 from{transform:translateX(0)}
                 to{transform:translateX(-50%)}
             }
@@ -236,9 +170,11 @@
                 border:1px solid var(--pale);overflow:hidden;
             }
             .meta-row{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--pale)}
-            .meta-cell{background:var(--bg);padding:15px 22px}
+            .meta-cell{background:var(--bg);padding:15px 22px;}
             .mc-label{font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--mid);margin-bottom:6px}
             .mc-val{font-size:14px}
+            .mc-val a{color:var(--fg);text-decoration:none;transition:color .2s}
+            .mc-val a:hover{color:var(--mid)}
             .mc-val.online::before{
                 content:'● ';font-size:10px;
                 animation:blink 2s step-end infinite;
@@ -252,8 +188,8 @@
                 gap:1px;background:var(--pale);
                 border:1px solid var(--pale);overflow:hidden;
             }
-            .vid-card{background:var(--bg);overflow:hidden;transition:background .25s}
-            .vid-card:hover{background:var(--white)}
+            .vid-card{background:var(--bg);overflow:hidden;transition:background .25s,transform .25s}
+            .vid-card:hover{background:var(--white);transform:translateY(-2px)}
 
             .vid-thumb{
                 aspect-ratio:16/9;
@@ -285,7 +221,7 @@
             .vid-zhttl{font-family:var(--zh);font-size:13px;color:var(--mid)}
             .vid-date{font-size:11px;color:var(--light);margin-top:14px;letter-spacing:.06em}
 
-            /* video tags */
+            /* VIDEO TAGS */
             .vid-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
             .tag{
                 font-size:10px;letter-spacing:.12em;text-transform:uppercase;
@@ -311,7 +247,7 @@
             .sk-name{font-size:13px;margin-bottom:14px;transition:color .2s}
             .sk-bar{height:3px;background:var(--pale);position:relative;transition:background .2s}
             .sk-fill{position:absolute;inset:0 auto 0 0;background:var(--fg);transition:background .2s}
-            .sk-item:hover .sk-cat{color:rgba(234,230,224,.5)}
+            .sk-item:hover .sk-cat{color:rgba(114, 111, 108, 0.5)}
             .sk-item:hover .sk-name{color:var(--bg)}
             .sk-item:hover .sk-bar{background:rgba(234,230,224,.2)}
             .sk-item:hover .sk-fill{background:var(--bg)}
@@ -323,7 +259,7 @@
                 font-size:10px;color:var(--light);
                 transition:color .2s;letter-spacing:.04em;
             }
-            .sk-item:hover::after{color:rgba(234,230,224,.3)}
+            .sk-item:hover::after{color:#777068}
 
             /* ── CONTACT STRIP ── */
             .contact-strip{
@@ -376,42 +312,38 @@
             .f-links a:hover{color:var(--fg)}
             footer span:last-child{text-align:right}
 
-            /* ── SCROLL REVEAL ── */
-            .reveal{opacity:0;transform:translateY(22px)}
-
             /* ── SCANLINE ── */
-            .scanline-el{
-            position:absolute;
-            width:100%;height:2px;
-            background:rgba(0,0,0,.04);
-            pointer-events:none;
-            animation:scanDown 6s linear infinite;
-            }
-            @keyframes scanDown{
-            from{top:-4px}to{top:100%}
-            }
+            .scanline-el{position:absolute;width:100%;height:2px;background:rgba(0,0,0,.04);pointer-events:none;animation:scanDown 6s linear infinite}
+            @keyframes scanDown{from{top:-4px}to{top:100%}}
 
-            /* ── MARQUEE PAUSE ON HOVER ── */
-            .spin-track:hover{animation-play-state:paused}
-
-            /* ── RESPONSIVE ── */
+            /* ── -> DARK MODE ── */
+            html[data-theme="dark"] .h-title{color:#9a9590}
+            html[data-theme="dark"] .h-title em,html[data-theme="dark"] .h-sub,html[data-theme="dark"] .ab-p em,html[data-theme="dark"] .mc-val,html[data-theme="dark"] .vid-ttl,html[data-theme="dark"] .sk-name,html[data-theme="dark"] .cs-h{color:var(--fg)}
+            html[data-theme="dark"] .ab-p,html[data-theme="dark"] .cs-sub{color:#9a9590}
+            html[data-theme="dark"] .mc-label{color:var(--light)}
+            /* ── -> RESPONSIVE OVERRIDE(S) ── */
             @media(max-width:900px){
-            nav{padding:16px 24px}
-            nav::after{left:24px;right:24px}
-            .n-links{gap:20px}
-            .n-ver{display:none}
-            #hero{padding:100px 24px 60px}
-            .hero-grid{grid-template-columns:1fr;gap:40px}
-            .cube-wrap{display:none}
-            .section{padding:60px 24px}
-            .about-grid{grid-template-columns:1fr;gap:40px}
-            .vid-grid{grid-template-columns:1fr}
-            .sk-grid{grid-template-columns:repeat(2,1fr)}
-            .contact-strip{grid-template-columns:1fr;padding:60px 24px}
-            .cs-links{align-items:flex-start}
-            footer{padding:24px;flex-direction:column;gap:14px;text-align:center}
-            .h-annot{display:none}
+                #hero{padding:100px 24px 60px}
+                .hero-grid{grid-template-columns:1fr;gap:40px}
+                .cube-wrap{display:none}
+                .section{padding:60px 24px}
+                .about-grid{grid-template-columns:1fr;gap:40px}
+                .vid-grid{grid-template-columns:1fr}
+                .sk-grid{grid-template-columns:repeat(2,1fr)}
+                .contact-strip{grid-template-columns:1fr;padding:60px 24px}
+                .cs-links{align-items:flex-start}
+                .h-annot{display:none}
+                .h-title{white-space:normal;overflow:visible;font-size:clamp(24px,7vw,46px);line-height:1.05}
+                .h-title > span,.h-title em > span{display:block;white-space:nowrap}
+                .h-title br{display:none}
+                .h-line{padding-left:12px;word-break:break-word;overflow-wrap:break-word}
+                /* Toggle dock mobile */
+                .cursor-toggle,.theme-toggle{width:40px;height:40px}
+                .cursor-toggle.on{width:90px}
+                .cursor-toggle .ct-icon,.theme-toggle .theme-icon{width:18px;height:18px}
+                .cursor-toggle .ct-label{font-size:9px}
             }
+
         </style>
     </head>
     <body>
@@ -420,19 +352,77 @@
         <div id="c-ring"></div>
         <div id="c-dot"></div>
 
+        <!-- back to top -->
+        <button class="back-top" id="back-top" aria-label="Back to top" title="Back to top">↑</button>
+
+        <!-- toggle dock -->
+        <div class="toggle-dock" id="toggle-dock">
+            <!-- theme toggle (top) -->
+            <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode" title="Toggle theme">
+                <svg class="theme-icon theme-light" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="5"/>
+                    <line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/>
+                    <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+                    <line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/>
+                    <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+                </svg>
+                <svg class="theme-icon theme-dark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+                </svg>
+            </button>
+            <!-- cursor toggle (bottom) -->
+            <button class="cursor-toggle off" id="cursor-toggle" aria-label="Toggle custom cursor" title="Custom cursor: off">
+                <span class="ct-inner">
+                    <img class="ct-icon ct-icon-on" src="assets/cursor-dark.svg" alt="cursor" width="20" height="20">
+                    <img class="ct-icon ct-icon-off" src="assets/cursor-off.svg" alt="cursor off" width="20" height="20">
+                    <span class="ct-label">Cursor</span>
+                </span>
+            </button>
+        </div>
+
         <!-- nav -->
         <nav>
-        <a href="#" class="n-logo">
-            <img src="frame.png" alt="frame" width="30" height="30" flex-shrink="0">
-            qubixal.yt
-        </a>
-        <ul class="n-links">
-            <li><a href="#about">About / 关于</a></li>
-            <li><a href="#videos">Videos / 视频</a></li>
-            <li><a href="#tech">Tech / 技术</a></li>
-            <li><a href="#contact">Contact / 联系</a></li>
-        </ul>
-        <span class="n-ver" id="ver-num">v0.1.0</span>
+            <a href="#" class="n-logo">
+                <img src="assets/frame.png" alt="frame" width="30" height="30" flex-shrink="0" id="nav-frame">
+                qubixal.xyz
+            </a>
+
+            <!-- Desktop nav -->
+            <ul class="nav-main" id="nav-main">
+                <li class="nav-sections">
+                    <a href="#about">About / 关于</a>
+                    <a href="#videos">Videos / 视频</a>
+                    <a href="#tech">Tech / 技术</a>
+                    <a href="#contact">Contact / 联系</a>
+                </li>
+                <li class="nav-pages-reveal">
+                    <a href="/about.html">About / 关于</a>
+                    <a href="/repo.html">Repo / 仓库</a>
+                    <a href="/archive.html">Archive / 档案</a>
+                </li>
+                <li class="nav-more" id="nav-more">
+                    <button class="nav-more-btn">More</button>
+                </li>
+            </ul>
+            <button class="nav-toggle" aria-expanded="false" aria-controls="main-nav" aria-label="Open menu">☰</button>
+
+            <!-- Mobile nav -->
+            <ul class="n-links" id="main-nav">
+                <li><a href="#about">About / 关于</a></li>
+                <li><a href="#videos">Videos / 视频</a></li>
+                <li><a href="#tech">Tech / 技术</a></li>
+                <li><a href="#contact">Contact / 联系</a></li>
+                <li class="has-sub-mobile">
+                    <button class="sub-toggle" aria-expanded="false" aria-controls="sub-nav">More</button>
+                    <ul class="sub-links" id="sub-nav" aria-hidden="true">
+                        <li><a href="/about.html">About / 关于</a></li>
+                        <li><a href="/repo.html">Repo / 仓库</a></li>
+                        <li><a href="/archive.html">Archive / 档案</a></li>
+                    </ul>
+                </li>
+            </ul>
+
+            <span class="n-ver" id="ver-num">v0.1.0</span>
         </nav>
 
         <!-- hero -->
@@ -443,39 +433,40 @@
 
         <div class="hero-grid">
             <div class="hero-text">
-            <div class="h-badge reveal">// QUBIXAL · Q比工作室</div>
-            <h1 class="h-title reveal">
-                <span id="hero-line-1" class="decode-text glitch" data-final="making">
-                    making
-                </span><br>
-                <em>
-                    <span id="hero-line-2" class="decode-text" data-final="// uselessly impressive">
-                        // uselessly impressive
+                <div class="h-badge reveal">// QUBIXAL · Q比工作室</div>
+                <h1 class="h-title reveal">
+                    <span id="hero-line-1" class="decode-text glitch" data-final="making">
+                        making
                     </span><br>
+                    <em>
+                        <span id="hero-line-2" class="decode-text" data-final="// uselessly impressive">
+                            // uselessly impressive
+                        </span><br>
 
-                    <span id="hero-line-3" class="decode-text" data-final="impressively useless //">
-                        impressively useless //
-                    </span><br>
-                </em>
-                <span id="hero-line-4" class="decode-text" data-final="things">
-                    things
-                </span>
-            </h1>
+                        <span id="hero-line-3" class="decode-text" data-final="impressively useless //">
+                            impressively useless //
+                        </span><br>
+                    </em>
+                    <span id="hero-line-4" class="decode-text" data-final="things">
+                        things
+                    </span>
+                </h1>
 
-            <p id="hero-sub"
-            class="h-sub reveal decode-text"
-            data-final="做些 // 华而不实 - 实而不华 // 的事">
-                做些 // 华而不实 - 实而不华 // 的事
-            </p>
+                <p id="hero-sub"
+                class="h-sub reveal decode-text"
+                data-final="做些 // 华而不实 - 实而不华 // 的事">
+                    做些 // 华而不实 - 实而不华 // 的事
+                </p>
 
-            <p class="h-line reveal">
-                专业方块 · 独立创作者 · 科技爱好者<br>
-                Professional Cube · Independent Creator · Tech Enthusiast
-            </p>
-            <div class="h-ctas reveal">
-                <a href="#videos" class="btn-p">View Work / 查看作品</a>
-                <a href="https://youtube.com/@qubixalYT" target="_blank" class="btn-s">→ @qubixalYT</a>
-            </div>
+                <p class="h-line reveal">
+                    专业方块 · 独立创作者 · 科技爱好者<br>
+                    Professional Cube · Independent Creator · Tech Enthusiast
+                </p>
+                <div class="h-ctas reveal">
+                    <a href="#videos" class="btn-p">View Work / 查看作品</a>
+                    <a href="https://youtube.com/@qubixalYT" target="_blank" class="btn-s">→ @qubixalYT</a>
+                    <a href="https://space.bilibili.com/3706941203286600" target="_blank" class="btn-s">→ @q比工作室</a>
+                </div>
             </div>
 
             <div class="cube-wrap reveal">
@@ -497,7 +488,7 @@
         </div>
         </section>
 
-        <!-- the thing that spins idk what to call it -->
+        <!-- the thing that spins idk what to call it carousel? -->
         <div class="spin">
         <div class="spin-track" id="spin">
             <span class="s-item">Emerging Tech</span><span class="s-item s-sep">///</span>
@@ -552,21 +543,21 @@
                     <div class="meta-row">
                         <div class="meta-cell">
                             <div class="mc-label">Location / 位置</div>
-                            <div class="mc-val">Earth (mostly)</div>
+                            <div class="mc-val"><a href="https://science.nasa.gov/earth/" target="_blank">Earth (mostly) →</a></div>
                         </div>
                         <div class="meta-cell">
                             <div class="mc-label">Focus / 专注</div>
-                            <div class="mc-val">Technology</div>
+                            <div class="mc-val"><a href="https://en.wikipedia.org/wiki/Technology" target="_blank">Technology →</a></div>
                         </div>
                     </div>
                     <div class="meta-row">
                         <div class="meta-cell">
                             <div class="mc-label">YouTube</div>
-                            <div class="mc-val">@qubixalYT</div>
+                            <div class="mc-val"><a href="https://www.youtube.com/@qubixalYT" target="_blank">@qubixalYT →</a></div>
                         </div>
                         <div class="meta-cell">
                             <div class="mc-label">Bilibili / B站</div>
-                            <div class="mc-val">q比工作室</div>
+                            <div class="mc-val"><a href="https://space.bilibili.com/3706941203286600" target="_blank">q比工作室 →</a></div>
                         </div>
                     </div>
                     <div class="meta-row">
@@ -576,7 +567,7 @@
                         </div>
                         <div class="meta-cell">
                             <div class="mc-label">Next Upload</div>
-                            <div class="mc-val" id="next-up">when i find my password</div>
+                            <div class="mc-val" id="next-up">when i find my <a href="https://en.wikipedia.org/wiki/Password" target="_blank">password → </a></div>
                         </div>
                     </div>
                 </div>
@@ -700,18 +691,218 @@
         <!-- SCRIPT -->
         <script>
             // ── CURSOR ──
-            const dot = document.getElementById('c-dot');
-            const ring = document.getElementById('c-ring');
-            let mx=0,my=0,rx=0,ry=0;
-            document.addEventListener('mousemove',e=>{
-            mx=e.clientX; my=e.clientY;
-            dot.style.left=mx+'px'; dot.style.top=my+'px';
-            });
-            (function animRing(){
-            rx+=(mx-rx)*0.11; ry+=(my-ry)*0.11;
-            ring.style.left=rx+'px'; ring.style.top=ry+'px';
-            requestAnimationFrame(animRing);
+            (function(){
+                const STORAGE_KEY = 'qubixal-cursor';
+                const saved = localStorage.getItem(STORAGE_KEY);
+                const cursorEnabled = saved === null ? true : saved === 'true';
+
+                function applyCursorState(enabled){
+                    const dot = document.getElementById('c-dot');
+                    const ring = document.getElementById('c-ring');
+                    if(enabled){
+                        document.body.classList.add('hide-cursor');
+                        if(dot){ dot.style.display='block'; dot.style.opacity='0'; }
+                        if(ring){ ring.style.display='block'; ring.style.opacity='0'; }
+                    } else {
+                        document.body.classList.remove('hide-cursor');
+                        if(dot){ dot.style.display='none'; dot.style.opacity='0'; }
+                        if(ring){ ring.style.display='none'; ring.style.opacity='0'; }
+                    }
+                    // Toggle button state
+                    const btn = document.getElementById('cursor-toggle');
+                    if(btn){
+                        btn.classList.toggle('on', enabled);
+                        btn.setAttribute('aria-pressed', enabled ? 'true' : 'false');
+                    }
+                }
+
+                // Init
+                if (window.matchMedia("(any-pointer: fine)").matches) {
+                    applyCursorState(cursorEnabled);
+
+                    if(cursorEnabled){
+                        const dot = document.getElementById('c-dot');
+                        const ring = document.getElementById('c-ring');
+                        if (!dot || !ring) return;
+                        let mx = 0, my = 0, rx = 0, ry = 0;
+                        let isMoving = false;
+
+                        document.addEventListener('mousemove', e => {
+                            if (!isMoving) {
+                                rx = e.clientX;
+                                ry = e.clientY;
+                                dot.style.opacity = '1';
+                                ring.style.opacity = '1';
+                                isMoving = true;
+                            }
+                            mx = e.clientX; 
+                            my = e.clientY;
+                            dot.style.left = mx + 'px'; 
+                            dot.style.top = my + 'px';
+                        });
+
+                        (function animRing(){
+                            rx += (mx - rx) * 0.11; 
+                            ry += (my - ry) * 0.11;
+                            ring.style.left = rx + 'px'; 
+                            ring.style.top = ry + 'px';
+                            requestAnimationFrame(animRing);
+                        })();
+                    }
+                } else {
+                    applyCursorState(false);
+                }
+
+
+
+                // ── CURSOR TOGGLE BUTTON ──
+                const cursorToggleBtn = document.getElementById('cursor-toggle');
+                if(cursorToggleBtn){
+                    const hasFinePointer = window.matchMedia("(any-pointer: fine)").matches;
+                    const _themeSaved = localStorage.getItem('qubixal-theme');
+                    const isDark = _themeSaved === 'dark' || document.documentElement.getAttribute('data-theme') === 'dark';
+                    const cursorOnSrc = isDark ? 'assets/cursor-light.svg' : 'assets/cursor-dark.svg';
+                    if(!hasFinePointer){
+                        cursorToggleBtn.classList.add('disabled','off');
+                        cursorToggleBtn.setAttribute('aria-disabled','true');
+                        cursorToggleBtn.title = 'Custom cursor not available on this device';
+                    } else {
+                        // Set initial visual state based on both cursor AND theme
+                        const offSrcInit = isDark ? 'assets/cursor-off-light.svg' : 'assets/cursor-off.svg';
+                        if(cursorEnabled){
+                            cursorToggleBtn.classList.remove('off');cursorToggleBtn.classList.add('on');
+                            cursorToggleBtn.querySelector('.ct-icon-on').src = cursorOnSrc;
+                            cursorToggleBtn.querySelector('.ct-icon-off').src = offSrcInit;
+                            cursorToggleBtn.title = 'Custom cursor: on';
+                        } else {
+                            cursorToggleBtn.classList.add('off');cursorToggleBtn.classList.remove('on');
+                            cursorToggleBtn.querySelector('.ct-icon-off').src = offSrcInit;
+                            cursorToggleBtn.title = 'Custom cursor: off';
+                        }
+                        cursorToggleBtn.addEventListener('click', () => {
+                            const currentState = localStorage.getItem(STORAGE_KEY);
+                            const nowEnabled = !(currentState === null ? true : currentState === 'true');
+                            localStorage.setItem(STORAGE_KEY, nowEnabled);
+                            applyCursorState(nowEnabled);
+                            const nowDark = document.documentElement.getAttribute('data-theme') === 'dark';
+                            const newSrc = nowDark ? 'assets/cursor-light.svg' : 'assets/cursor-dark.svg';
+                            // Update the off-icon too for theme
+                            const offSrc = nowDark ? 'assets/cursor-off-light.svg' : 'assets/cursor-off.svg';
+                            if(nowEnabled){
+                                cursorToggleBtn.classList.remove('off');cursorToggleBtn.classList.add('on');
+                                cursorToggleBtn.querySelector('.ct-icon-on').src = newSrc;
+                                cursorToggleBtn.querySelector('.ct-icon-off').src = offSrc;
+                                cursorToggleBtn.title = 'Custom cursor: on';
+                            } else {
+                                cursorToggleBtn.classList.add('off');cursorToggleBtn.classList.remove('on');
+                                cursorToggleBtn.title = 'Custom cursor: off';
+                            }
+                            if(nowEnabled){location.reload();}
+                        });
+                    }
+                }
+
+
             })();
+
+
+
+            // ── THEME TOGGLE ──
+            (function(){
+                const THEME_KEY = 'qubixal-theme';
+                const savedTheme = localStorage.getItem(THEME_KEY);
+                if(savedTheme === 'dark'){document.documentElement.setAttribute('data-theme','dark')}
+                // Set initial frame based on theme
+                const navFrame = document.getElementById('nav-frame');
+                if(navFrame && savedTheme === 'dark'){navFrame.src = 'assets/frame-white.png'}
+                const themeBtn = document.getElementById('theme-toggle');
+                if(themeBtn){
+                    themeBtn.addEventListener('click', ()=>{
+                        const wasDark = document.documentElement.getAttribute('data-theme') === 'dark';
+                        if(wasDark){
+                            document.documentElement.removeAttribute('data-theme');
+                            localStorage.setItem(THEME_KEY,'light');
+                        } else {
+                            document.documentElement.setAttribute('data-theme','dark');
+                            localStorage.setItem(THEME_KEY,'dark');
+                        }
+                        // Update cursor icons to match new theme (both on and off)
+                        const nowDark = !wasDark;
+                        const newOnSrc = nowDark ? 'assets/cursor-light.svg' : 'assets/cursor-dark.svg';
+                        const newOffSrc = nowDark ? 'assets/cursor-off-light.svg' : 'assets/cursor-off.svg';
+                        const cursorIconOn = document.querySelector('.cursor-toggle .ct-icon-on');
+                        const cursorIconOff = document.querySelector('.cursor-toggle .ct-icon-off');
+                        const cursorBtn = document.getElementById('cursor-toggle');
+                        if(cursorBtn){
+                            cursorBtn.querySelector('.ct-icon-on').src = newOnSrc;
+                            cursorBtn.querySelector('.ct-icon-off').src = newOffSrc;
+                        }
+                        // Update frame logo: light mode = dark frame, dark mode = light frame
+                        const navFrame = document.getElementById('nav-frame');
+                        if(navFrame){
+                            navFrame.src = wasDark ? 'assets/frame.png' : 'assets/frame-white.png';
+                        }
+                    });
+                }
+            })();
+
+            // ── NAV MORE (DESKTOP) ──
+            (function(){
+                const navMore = document.getElementById('nav-more');
+                const navMain = document.getElementById('nav-main');
+                if(!navMore||!navMain) return;
+                let closeTimer = null;
+                function openNav(){
+                    clearTimeout(closeTimer);
+                    navMain.classList.add('open');
+                }
+                function closeNav(){
+                    closeTimer = setTimeout(()=>navMain.classList.remove('open'), 200);
+                }
+                navMore.addEventListener('mouseenter', openNav);
+                navMore.addEventListener('mouseleave', closeNav);
+                const reveal = navMain.querySelector('.nav-pages-reveal');
+                if(reveal){
+                    reveal.addEventListener('mouseenter', ()=>clearTimeout(closeTimer));
+                    reveal.addEventListener('mouseleave', closeNav);
+                }
+            })();
+
+            // ── MOBILE NAV ──
+            (function(){
+                document.querySelectorAll('.has-sub-mobile .sub-toggle').forEach(btn=>{
+                    btn.addEventListener('click',(e)=>{
+                        e.preventDefault();
+                        const parent = btn.closest('.has-sub-mobile');
+                        if(!parent) return;
+                        const open = parent.classList.toggle('open');
+                        btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+                        const sub = parent.querySelector('.sub-links');
+                        if(sub) sub.setAttribute('aria-hidden', open ? 'false' : 'true');
+                    });
+                });
+            })();
+
+            // ── FOOTER AVOIDANCE (for icons) ──
+            (function(){
+                const dock = document.getElementById('toggle-dock');
+                const backTop = document.getElementById('back-top');
+                const footer = document.querySelector('footer');
+                if(!footer) return;
+                const observer = new IntersectionObserver((entries)=>{
+                    entries.forEach(entry=>{
+                        if(entry.isIntersecting){
+                            if(dock) dock.classList.add('above-footer');
+                            if(backTop) backTop.classList.add('above-footer');
+                        } else {
+                            if(dock) dock.classList.remove('above-footer');
+                            if(backTop) backTop.classList.remove('above-footer');
+                        }
+                    });
+                }, {threshold: 0.1});
+                observer.observe(footer);
+            })();
+
             document.querySelectorAll('a,button').forEach(el=>{
             el.addEventListener('mouseenter',()=>document.body.classList.add('hovering'));
             el.addEventListener('mouseleave',()=>document.body.classList.remove('hovering'));
@@ -744,7 +935,7 @@
                 cube.style.transform=`rotateX(${-22+ny*-.4}deg) rotateY(${30+nx}deg) translateY(0px)`;
             });
             }
-
+            
             // ── Version Number ──
             const now = new Date();
             document.getElementById('ver-num').textContent =
@@ -767,10 +958,8 @@
             // calcNext(); setInterval(calcNext,60000);
             
             // HERO SCRAMBLE
-
             const SCRAMBLE_CHARS =
             "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789<>[]{}\\/|!?+-=*#%&";
-
             const CHINESE_SCRAMBLE =
             "你嫌贵我还嫌贵呢！到底买不？这瓜皮是金子做的";
 
@@ -807,12 +996,12 @@
                 }, delay);
             }
             window.addEventListener("load", () => {
-            decodeElement(document.getElementById("hero-line-2"), 2);
-            decodeElement(document.getElementById("hero-line-3"), 2);
-            decodeElement(document.getElementById("hero-sub"), 2);
-        });
+                decodeElement(document.getElementById("hero-line-2"), 2);
+                decodeElement(document.getElementById("hero-line-3"), 2);
+                decodeElement(document.getElementById("hero-sub"), 2);
+            });
 
-            // ── Skill bar gaining animation ──
+            // ── Skill bar lvl up animation ──
             document.querySelectorAll('.sk-fill').forEach(bar=>{
             const w=bar.style.width;
             bar.style.width='0';
@@ -825,6 +1014,7 @@
             });
 
             // ── NAV BACKGROUND ON SCROLL ──
+            const backTop=document.getElementById('back-top');
             window.addEventListener('scroll',()=>{
             const nav=document.querySelector('nav');
             if(window.scrollY>60){
@@ -834,19 +1024,39 @@
                 nav.style.background='linear-gradient(to bottom,var(--bg) 60%,transparent)';
                 nav.style.boxShadow='none';
             }
+            if(backTop){
+                if(window.scrollY>400){backTop.classList.add('visible')}
+                else{backTop.classList.remove('visible')}
+            }
             });
+            if(backTop){backTop.addEventListener('click',()=>window.scrollTo({top:0,behavior:'smooth'}))}
 
-            // ── MODEL-VIEWER: lock camera target and tweak lighting
+            // ── MOBILE NAV TOGGLE ──
+            (function(){
+                const navToggle = document.querySelector('.nav-toggle');
+                const mainNav = document.getElementById('main-nav');
+                if(!navToggle || !mainNav) return;
+                navToggle.addEventListener('click', ()=>{
+                    const open = mainNav.classList.toggle('open');
+                    navToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+                });
+                mainNav.querySelectorAll('a').forEach(a=> a.addEventListener('click', ()=>{
+                    mainNav.classList.remove('open');
+                    navToggle.setAttribute('aria-expanded','false');
+                    // Also close any open submenu
+                    mainNav.querySelectorAll('.has-sub-mobile').forEach(s=>s.classList.remove('open'));
+                }));
+            })();
+
+            // ── MODEL VIEWER CONFIG ──
             (function(){
                 const mv = document.getElementById('mv');
                 if(!mv) return;
-                // ensure the camera target stays at origin so the model rotates in place
+                // camera locked
                 mv.cameraTarget = '0m 0m 0m';
                 mv.addEventListener('camera-change', ()=>{
-                    // re-assert the locked target (prevents panning changes)
-                    try{ mv.cameraTarget = '0m 0m 0m'; }catch(e){}
+                    try{ mv.cameraTarget = '0m 0m 0m'; }catch(e){} // relock camera
                 });
-                // gentle exposure tweak and stronger shadows for better visibility
                 try{ mv.exposure = 0.8; mv.shadowIntensity = 2; }catch(e){}
             })();
         </script>

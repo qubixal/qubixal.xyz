@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>About / 关于 · qubixal.xyz</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Crimson+Pro:ital,wght@1,300;1,400;1,600&family=Noto+Serif+SC:wght@300;400&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="style.css">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+        <style>
+            *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+            :root{
+                --bg:#eae6e0;--bg2:#e2deda;--fg:#141210;--mid:#7a7672;
+                --light:#c0bbb4;--pale:#d4d0ca;--white:#f5f2ed;
+                --mono:'IBM Plex Mono',monospace;--static:'Chakra Petch',sans-serif;
+                --serif:'Crimson Pro','Georgia',serif;--zh:'Noto Serif SC',serif;
+            }
+            html{scroll-behavior:smooth}
+            body{background:var(--bg);color:var(--fg);font-family:var(--mono);font-size:14px;line-height:1.6;overflow-x:hidden}
+            body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9000;opacity:.025;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)'/%3E%3C/svg%3E")}
+
+            /* ── ABOUT NAV  ── */
+            .nav-pages{display:none;gap:36px;list-style:none}
+            .nav-pages a{font-size:clamp(0.75rem,1vw,1rem);letter-spacing:.12em;text-transform:uppercase;text-decoration:none;color:var(--mid);position:relative;transition:color .2s}
+            .nav-pages a::after{content:'';position:absolute;bottom:-2px;left:0;width:0;height:1px;background:var(--fg);transition:width .3s}
+            .nav-pages a:hover{color:var(--fg)}
+            .nav-pages a:hover::after{width:100%}
+            .nav-pages a[aria-current="page"]{color:var(--fg)}
+            .nav-pages a[aria-current="page"]::after{width:100%}
+            @media(min-width:901px){.nav-pages{display:flex}}
+
+            /* ── PAGE HEADER ── */
+            .page-header{padding:140px 48px 60px;max-width:1120px;margin:0 auto}
+            .page-label{font-size:12px;letter-spacing:.26em;text-transform:uppercase;color:var(--mid);margin-bottom:24px;display:flex;align-items:center;gap:18px}
+            .page-label::after{content:'';flex:1;height:1px;background:var(--pale)}
+            .page-title{font-family:var(--static);font-style:italic;font-weight:400;font-size:clamp(32px,5.5vw,64px);line-height:1.05;letter-spacing:-.015em;margin-bottom:12px}
+            .page-title em{font-style:italic;color:var(--mid)}
+            .page-sub{font-family:var(--zh);font-size:clamp(15px,1.6vw,20px);font-weight:300;color:var(--mid);letter-spacing:.18em}
+
+            /* ── SECTIONS ── */
+            .section{padding:64px 48px;max-width:1120px;margin:0 auto}
+            .sec-label{font-size:12px;letter-spacing:.26em;text-transform:uppercase;color:var(--mid);margin-bottom:48px;display:flex;align-items:center;gap:18px}
+            .sec-label span{opacity:.5}
+            .sec-label::after{content:'';flex:1;height:1px;background:var(--pale)}
+
+            /* ── ABOUT GRID ── */
+            .about-grid{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start}
+            .ab-h{font-family:var(--static);font-weight:400;font-size:clamp(24px,3vw,42px);line-height:1.15;margin-bottom:24px}
+            .ab-h em{font-family:var(--static);font-style:italic;font-weight:1;font-size:clamp(24px,3vw,42px);line-height:1.15}
+            .ab-p{font-size:16px;color:var(--mid);line-height:1.95;margin-bottom:14px}
+            .ab-p em{font-style:italic;color:var(--fg)}
+
+            .meta-grid{display:grid;gap:1px;background:var(--pale);border:1px solid var(--pale);overflow:hidden}
+            .meta-row{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--pale)}
+            .meta-cell{background:var(--bg);padding:15px 22px}
+            .mc-label{font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--mid);margin-bottom:6px}
+            .mc-val{font-size:14px}
+            .mc-val a{color:var(--fg);text-decoration:none;transition:color .2s}
+            .mc-val a:hover{color:var(--mid)}
+            .mc-val.online::before{content:'● ';font-size:10px;animation:blink 2s step-end infinite}
+            @keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
+
+            /* ── TIMELINE ── */
+            .timeline{position:relative;padding-left:40px}
+            .timeline::before{content:'';position:absolute;left:14px;top:0;bottom:0;width:1px;background:var(--pale)}
+            .tl-item{position:relative;margin-bottom:48px}
+            .tl-item::before{content:'';position:absolute;left:-33px;top:6px;width:7px;height:7px;background:var(--fg);border-radius:50%}
+            .tl-date{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--mid);margin-bottom:8px}
+            .tl-title{font-family:var(--static);font-size:18px;font-weight:400;margin-bottom:6px}
+            .tl-desc{font-size:14px;color:var(--mid);line-height:1.8}
+            .tl-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+            .tag{font-size:10px;letter-spacing:.12em;text-transform:uppercase;border:1px solid var(--pale);color:var(--mid);padding:3px 8px}
+            
+            /* ── SCROLL REVEAL ── */
+            .reveal{opacity:0;transform:translateY(22px)}
+
+            /* ── RESPONSIVE overrides ── */
+            @media(max-width:900px){
+                .page-header{padding:120px 24px 40px}
+                .section{padding:48px 24px}
+                .about-grid{grid-template-columns:1fr;gap:40px}
+                .timeline{padding-left:32px}
+                .timeline::before{left:10px}
+                .tl-item::before{left:-29px}
+            }
+        </style>
+    </head>
+    <body>
+        <div id="c-ring"></div>
+        <div id="c-dot"></div>
+
+        <!-- back to top -->
+        <button class="back-top" id="back-top" aria-label="Back to top" title="Back to top">↑</button>
+
+        <!-- toggle dock -->
+        <div class="toggle-dock" id="toggle-dock">
+            <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode" title="Toggle theme">
+                <svg class="theme-icon theme-light" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+                <svg class="theme-icon theme-dark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+            </button>
+            <button class="cursor-toggle off" id="cursor-toggle" aria-label="Toggle custom cursor" title="Custom cursor: off">
+                <span class="ct-inner">
+                    <img class="ct-icon ct-icon-on" src="assets/cursor-dark.svg" alt="cursor" width="20" height="20">
+                    <img class="ct-icon ct-icon-off" src="assets/cursor-off.svg" alt="cursor off" width="20" height="20">
+                    <span class="ct-label">Cursor</span>
+                </span>
+            </button>
+        </div>
+
+        <!-- nav -->
+        <nav>
+            <a href="/index.html" class="n-logo">
+                <img src="assets/frame.png" alt="frame" width="30" height="30" flex-shrink="0" id="nav-frame">
+                qubixal.xyz
+            </a>
+            <ul class="nav-pages" id="nav-pages">
+                <li><a href="/index.html">Main / 主页</a></li>
+                <li><a href="/about.html" aria-current="page">About / 关于</a></li>
+                <li><a href="/repo.html">Repo / 仓库</a></li>
+                <li><a href="/archive.html">Archive / 档案</a></li>
+            </ul>
+            <button class="nav-toggle" aria-expanded="false" aria-controls="main-nav" aria-label="Open menu">☰</button>
+            <ul class="n-links" id="main-nav">
+                <li><a href="/index.html">Main / 主页</a></li>
+                <li><a href="/about.html" aria-current="page">About / 关于</a></li>
+                <li><a href="/repo.html">Repo / 仓库</a></li>
+                <li><a href="/archive.html">Archive / 档案</a></li>
+            </ul>
+            <span class="n-ver" id="ver-num">v0.1.0</span>
+        </nav>
+
+        <!-- page header -->
+        <header class="page-header">
+            <div class="page-label reveal"><span>01</span> About / 关于</div>
+            <h1 class="page-title reveal">The cube behind<br><em>the screen</em></h1>
+            <p class="page-sub reveal">屏幕背后的正方体。</p>
+        </header>
+
+        <!-- story -->
+        <section class="section">
+            <div class="sec-label reveal"><span>01</span> Story / 故事</div>
+            <div class="about-grid">
+                <div>
+                    <h2 class="ab-h reveal">Who is <em>this cube?</em></h2>
+                    <p class="ab-p reveal">
+                        qubixal started as a Youtube channel aiming to explore hardware, software and creative technology.
+                        From custom PCBs to local LLM deployments, from useless inventions to impressive ones - this is the qubixal manifesto.
+                    </p>
+                    <p class="ab-p reveal">
+                        q比(qubixal)是一位未来up主，旨在探索硬件、软件和创意技术的交汇点。
+                        从定制PCB到本地LLM部署，从看似无用的发明到令人惊艳的杰作——这就是qubixal思想。
+                    </p>
+                </div>
+                <div class="meta-grid reveal">
+                    <div class="meta-row">
+                        <div class="meta-cell">
+                            <div class="mc-label">Location / 位置</div>
+                            <div class="mc-val"><a href="https://science.nasa.gov/earth/" target="_blank">Earth (mostly) →</a></div>
+                        </div>
+                        <div class="meta-cell">
+                            <div class="mc-label">Focus / 专注</div>
+                            <div class="mc-val"><a href="https://en.wikipedia.org/wiki/Technology" target="_blank">Technology →</a></div>
+                        </div>
+                    </div>
+                    <div class="meta-row">
+                        <div class="meta-cell">
+                            <div class="mc-label">YouTube</div>
+                            <div class="mc-val"><a href="https://www.youtube.com/@qubixalYT" target="_blank">@qubixalYT →</a></div>
+                        </div>
+                        <div class="meta-cell">
+                            <div class="mc-label">Bilibili / B站</div>
+                            <div class="mc-val"><a href="https://space.bilibili.com/3706941203286600" target="_blank">q比工作室 →</a></div>
+                        </div>
+                    </div>
+                    <div class="meta-row">
+                        <div class="meta-cell">
+                            <div class="mc-label">Status / 状态</div>
+                            <div class="mc-val online">Building</div>
+                        </div>
+                        <div class="meta-cell">
+                            <div class="mc-label">Founded</div>
+                            <div class="mc-val">2025</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- timeline -->
+        <section class="section" style="border-top:1px solid var(--pale)">
+            <div class="sec-label reveal"><span>02</span> Timeline / 时间线</div>
+            <div class="timeline reveal">
+                <div class="tl-item">
+                    <div class="tl-date">2025 Dec · Origin</div>
+                    <div class="tl-title">Exploring the 3D space</div>
+                    <div class="tl-desc">When a square extended its vertices "upwards", the concept of a cube was born.</div>
+                    <div class="tl-tags"><span class="tag">Lore</span><span class="tag">Launch</span></div>
+                </div>
+                <div class="tl-item">
+                    <div class="tl-date">2026 May · Launch</div>
+                    <div class="tl-title">qubixal.xyz goes live</div>
+                    <div class="tl-desc">The qubixal.xyz website launches. First video still "coming soon".</div>
+                    <div class="tl-tags"><span class="tag">Web</span><span class="tag">Launch</span></div>
+                </div>
+                <div class="tl-item">
+                    <div class="tl-date">Future · ???</div>
+                    <div class="tl-title">World domination (maybe)</div>
+                    <div class="tl-desc">#TODO: more videos, a repo page, project archives, and possibly finding my password (so i can upload).</div>
+                    <div class="tl-tags"><span class="tag">Future</span><span class="tag">Plans</span></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- contact strip -->
+        <div style="border-top:1px solid var(--pale)">
+            <div class="contact-strip reveal" style="border-top:none;max-width:none">
+                <div>
+                    <h2 class="cs-h">Let's make something<br><em>impressive<s>ly useless</s>.</em></h2>
+                    <p class="cs-sub">一起制造精彩<s>而无用</s>之物。</p>
+                </div>
+                <div class="cs-links">
+                    <a href="https://youtube.com/@qubixalYT" target="_blank" class="cs-link">YouTube @qubixalYT</a>
+                    <a href="https://space.bilibili.com/3706941203286600" target="_blank" class="cs-link">Bilibili q比工作室</a>
+                    <a href="https://github.com/qubixal" target="_blank" class="cs-link">GitHub</a>
+                    <a href="https://x.com/qubixalYT" target="_blank" class="cs-link">X</a>
+                    <a href="mailto:qubixalYT@gmail.com" class="cs-link">Email / 邮件</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- footer -->
+        <footer>
+            <span>© 2026 qubixal · q比工作室</span>
+            <ul class="f-links">
+                <li><a href="https://youtube.com/@qubixalYT" target="_blank">YouTube</a></li>
+                <li><a href="https://space.bilibili.com/3706941203286600" target="_blank">Bilibili</a></li>
+                <li><a href="https://github.com/qubixal" target="_blank">GitHub</a></li>
+            </ul>
+            <span>// making things since yesterday</span>
+        </footer>
+
+        <script src="scripts.js"></script>
+    </body>
+</html>

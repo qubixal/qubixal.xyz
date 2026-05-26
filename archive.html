@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Archive / 档案 · qubixal.xyz</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Crimson+Pro:ital,wght@1,300;1,400;1,600&family=Noto+Serif+SC:wght@300;400&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="style.css">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+        <style>
+            *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+            :root{
+                --bg:#eae6e0;--bg2:#e2deda;--fg:#141210;--mid:#7a7672;
+                --light:#c0bbb4;--pale:#d4d0ca;--white:#f5f2ed;
+                --mono:'IBM Plex Mono',monospace;--static:'Chakra Petch',sans-serif;
+                --serif:'Crimson Pro','Georgia',serif;--zh:'Noto Serif SC',serif;
+            }
+            html{scroll-behavior:smooth}
+            body{background:var(--bg);color:var(--fg);font-family:var(--mono);font-size:14px;line-height:1.6;overflow-x:hidden}
+            body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9000;opacity:.025;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)'/%3E%3C/svg%3E")}
+
+            /* ── NAV (ARCHIVE) ── */
+            @media(min-width:901px){.nav-pages{display:flex}}
+
+            /* ── PAGE HEADER ── */
+            .page-header{padding:140px 48px 60px;max-width:1120px;margin:0 auto}
+            .page-label{font-size:12px;letter-spacing:.26em;text-transform:uppercase;color:var(--mid);margin-bottom:24px;display:flex;align-items:center;gap:18px}
+            .page-label::after{content:'';flex:1;height:1px;background:var(--pale)}
+            .page-title{font-family:var(--static);font-style:italic;font-weight:400;font-size:clamp(32px,5.5vw,64px);line-height:1.05;letter-spacing:-.015em;margin-bottom:12px}
+            .page-title em{font-style:italic;color:var(--mid)}
+            .page-sub{font-family:var(--zh);font-size:clamp(15px,1.6vw,20px);font-weight:300;color:var(--mid);letter-spacing:.18em}
+
+            /* ── ARCHIVE LAYOUT ── */
+            .archive-wrap{max-width:800px;margin:0 auto;padding:0 48px 96px}
+            .archive-year{font-size:12px;letter-spacing:.26em;text-transform:uppercase;color:var(--mid);margin:48px 0 24px;display:flex;align-items:center;gap:18px}
+            .archive-year::after{content:'';flex:1;height:1px;background:var(--pale)}
+            .archive-year:first-child{margin-top:0}
+
+            /* ── POST CARD ── */
+            .post-card{display:block;text-decoration:none;color:var(--fg);padding:24px 0;border-bottom:1px solid var(--pale);transition:padding-left .2s;position:relative}
+            .post-card:hover{padding-left:12px}
+            .post-card::before{content:'';position:absolute;left:0;top:50%;transform:translateY(-50%);width:3px;height:0;background:var(--fg);transition:height .2s}
+            .post-card:hover::before{height:60%}
+            .post-meta{display:flex;align-items:center;gap:14px;margin-bottom:8px}
+            .post-date{font-size:11px;letter-spacing:.14em;color:var(--light)}
+            .post-tags{display:flex;gap:6px}
+            .post-tag{font-size:10px;letter-spacing:.12em;text-transform:uppercase;border:1px solid var(--pale);color:var(--mid);padding:2px 7px}
+            .post-title{font-family:var(--static);font-size:18px;font-weight:400;margin-bottom:6px;transition:color .2s}
+            .post-card:hover .post-title{color:var(--fg)}
+            .post-excerpt{font-size:13px;color:var(--mid);line-height:1.7}
+            .post-lang{font-family:var(--zh);font-size:12px;color:var(--light);margin-top:4px}
+
+            /* ── EMPTY STATE ── */
+            .empty-state{text-align:center;padding:80px 0;color:var(--mid)}
+            .empty-state .empty-icon{font-size:48px;margin-bottom:16px;opacity:.3}
+            .empty-state p{font-size:14px;line-height:1.8}
+
+            /* ── SCROLL REVEAL ── */
+            .reveal{opacity:0;transform:translateY(22px)}
+
+            /* ── THEME TOGGLE (top) ── */
+            .theme-toggle{width:44px;height:44px;background:var(--bg);border:1px solid var(--pale);display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 4px 16px rgba(0,0,0,.06);transition:border-color .2s,box-shadow .2s;position:relative;overflow:hidden;user-select:none;-webkit-user-select:none}
+            
+            /* ── RESPONSIVE overrides ── */
+            @media(max-width:900px){
+                .page-header{padding:120px 24px 40px}
+                .archive-wrap{padding:0 24px 60px}
+            }
+        </style>
+    </head>
+    <body>
+        <div id="c-ring"></div>
+        <div id="c-dot"></div>
+
+        <!-- back to top -->
+        <button class="back-top" id="back-top" aria-label="Back to top" title="Back to top">↑</button>
+
+        <!-- toggle dock -->
+        <div class="toggle-dock" id="toggle-dock">
+            <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode" title="Toggle theme">
+                <svg class="theme-icon theme-light" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+                <svg class="theme-icon theme-dark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+            </button>
+            <button class="cursor-toggle off" id="cursor-toggle" aria-label="Toggle custom cursor" title="Custom cursor: off">
+                <span class="ct-inner">
+                    <img class="ct-icon ct-icon-on" src="assets/cursor-dark.svg" alt="cursor" width="20" height="20">
+                    <img class="ct-icon ct-icon-off" src="assets/cursor-off.svg" alt="cursor off" width="20" height="20">
+                    <span class="ct-label">Cursor</span>
+                </span>
+            </button>
+        </div>
+
+        <!-- nav -->
+        <nav>
+            <a href="/index.html" class="n-logo">
+                <img src="assets/frame.png" alt="frame" width="30" height="30" flex-shrink="0" id="nav-frame">
+                qubixal.xyz
+            </a>
+            <ul class="nav-pages" id="nav-pages">
+                <li><a href="/index.html">Main / 主页</a></li>
+                <li><a href="/about.html">About / 关于</a></li>
+                <li><a href="/repo.html">Repo / 仓库</a></li>
+                <li><a href="/archive.html" aria-current="page">Archive / 档案</a></li>
+            </ul>
+            <button class="nav-toggle" aria-expanded="false" aria-controls="main-nav" aria-label="Open menu">☰</button>
+            <ul class="n-links" id="main-nav">
+                <li><a href="/index.html">Main / 主页</a></li>
+                <li><a href="/about.html">About / 关于</a></li>
+                <li><a href="/repo.html">Repo / 仓库</a></li>
+                <li><a href="/archive.html" aria-current="page">Archive / 档案</a></li>
+            </ul>
+            <span class="n-ver" id="ver-num">v0.1.0</span>
+        </nav>
+
+        <!-- page header -->
+        <header class="page-header">
+            <div class="page-label reveal"><span>Archive // 档案</span></div>
+            <h1 class="page-title reveal">Some things worth<br><em>remembering</em></h1>
+            <p class="page-sub reveal">一些值得回望的事</p>
+        </header>
+
+        <!-- archive content -->
+        <div class="archive-wrap">
+
+            <div class="archive-year reveal">2026</div>
+
+            <a href="#" class="post-card reveal">
+                <div class="post-meta">
+                    <span class="post-date">2026 · 05 · 28</span>
+                    <div class="post-tags">
+                        <span class="post-tag">Web</span>
+                        <span class="post-tag">Launch</span>
+                    </div>
+                </div>
+                <div class="post-title">qubixal.xyz website launches</div>
+                <div class="post-excerpt">The website finally goes live after way too many iterations on the navbar. Features a custom 3D cube, a questionable cursor toggle, and a footer that says "making things since yesterday".</div>
+                <div class="post-lang">qubixal.xyz 网站正式上线。</div>
+            </a>
+
+            <a href="#" class="post-card reveal">
+                <div class="post-meta">
+                    <span class="post-date">2026 · 04</span>
+                    <div class="post-tags">
+                        <span class="post-tag">AI</span>
+                        <span class="post-tag">LLM</span>
+                    </div>
+                </div>
+                <div class="post-title">The LLM Renaissance</div>
+                <div class="post-excerpt">Some crazy things happened this month. Gemma 4 -> GLM 5.1 -> Qwen3.6 -> Muse Spark -> Opus 4.7 -> Kimi K2.6 -> GPT5.5 -> Deepseek V4 -> MiMo V2.5...</div>
+                <div class="post-lang">LLM的复兴: 四月份怎么出了真么多新模型？</div>
+            </a>
+
+            <div class="archive-year reveal">2025</div>
+
+            <a href="#" class="post-card reveal">
+                <div class="post-meta">
+                    <span class="post-date">2025 · 12 · 18</span>
+                    <div class="post-tags">
+                        <span class="post-tag">Idea</span>
+                    </div>
+                </div>
+                <div class="post-title">The idea that started everything</div>
+                <div class="post-excerpt">Silently, the seed of an idea took root this day. What happened next was the beginning of a qubixal project - the first of its kind... and the first of many.</div>
+                <div class="post-lang">这一天，一颗想法的种子悄然生根发芽，变成了一个q比项目。它不仅仅是历史中的第一次……也成为了未来的榜样。</div>
+            </a>
+        </div>
+
+        <!-- footer -->
+        <footer>
+            <span>© 2026 qubixal · q比工作室</span>
+            <ul class="f-links">
+                <li><a href="https://youtube.com/@qubixalYT" target="_blank">YouTube</a></li>
+                <li><a href="https://space.bilibili.com/3706941203286600" target="_blank">Bilibili</a></li>
+                <li><a href="https://github.com/qubixal" target="_blank">GitHub</a></li>
+            </ul>
+            <span>// making things since yesterday</span>
+        </footer>
+
+        <script src="scripts.js"></script>
+    </body>
+</html>
