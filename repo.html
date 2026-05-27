@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Repo / 仓库 · qubixal.xyz</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Crimson+Pro:ital,wght@1,300;1,400;1,600&family=Noto+Serif+SC:wght@300;400&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="style.css">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+        <style>
+            *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+            :root{
+                --bg:#eae6e0;--bg2:#e2deda;--fg:#141210;--mid:#7a7672;
+                --light:#c0bbb4;--pale:#d4d0ca;--white:#f5f2ed;
+                --mono:'IBM Plex Mono',monospace;--static:'Chakra Petch',sans-serif;
+                --serif:'Crimson Pro','Georgia',serif;--zh:'Noto Serif SC',serif;
+            }
+            html{scroll-behavior:smooth}
+            body{background:var(--bg);color:var(--fg);font-family:var(--mono);font-size:14px;line-height:1.6;overflow-x:hidden}
+            body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9000;opacity:.025;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)'/%3E%3C/svg%3E")}
+
+            /* ── NAV (REPO) ── */
+            @media(min-width:901px){.nav-pages{display:flex}}
+
+            /* ── PAGE HEADER ── */
+            .page-header{padding:140px 48px 60px;max-width:1120px;margin:0 auto}
+            .page-label{font-size:12px;letter-spacing:.26em;text-transform:uppercase;color:var(--mid);margin-bottom:24px;display:flex;align-items:center;gap:18px}
+            .page-label::after{content:'';flex:1;height:1px;background:var(--pale)}
+            .page-title{font-family:var(--static);font-style:italic;font-weight:400;font-size:clamp(32px,5.5vw,64px);line-height:1.05;letter-spacing:-.015em;margin-bottom:12px}
+            .page-title em{font-style:italic;color:var(--mid)}
+            .page-sub{font-family:var(--zh);font-size:clamp(15px,1.6vw,20px);font-weight:300;color:var(--mid);letter-spacing:.18em}
+
+            /* ── REPO LAYOUT ── */
+            .repo-wrap{max-width:1120px;margin:0 auto;padding:0 48px 96px}
+
+            /* ── STATS BAR ── */
+            .stats-bar{display:flex;align-items:center;gap:32px;margin-bottom:48px;padding:20px 24px;border:1px solid var(--pale);background:var(--bg)}
+            .stat-item{display:flex;flex-direction:column;gap:4px}
+            .stat-num{font-family:var(--static);font-size:24px;font-weight:500;line-height:1}
+            .stat-label{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--mid)}
+            .stat-sep{width:1px;height:36px;background:var(--pale);flex-shrink:0}
+
+            /* ── REPO GRID ── */
+            .repo-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--pale);border:1px solid var(--pale);overflow:hidden;margin-bottom:48px}
+            .repo-card{background:var(--bg);padding:32px;display:flex;flex-direction:column;gap:16px;transition:background .25s,transform .25s;position:relative}
+            .repo-card:hover{background:var(--white);transform:translateY(-2px)}
+
+            .repo-top{display:flex;align-items:flex-start;justify-content:between;gap:12px}
+            .repo-name{font-family:var(--static);font-size:18px;font-weight:500;display:flex;align-items:center;gap:10px;flex:1;min-width:0}
+            .repo-name a{color:var(--fg);text-decoration:none;transition:color .2s;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+            .repo-name a:hover{color:var(--mid)}
+            .repo-icon{width:18px;height:18px;flex-shrink:0;opacity:.5}
+            .repo-badge{font-size:10px;letter-spacing:.1em;text-transform:uppercase;border:1px solid var(--pale);color:var(--mid);padding:3px 8px;flex-shrink:0;white-space:nowrap}
+            .repo-badge.fork{border-color:var(--light);color:var(--light)}
+
+            .repo-desc{font-size:14px;color:var(--mid);line-height:1.7;flex:1}
+            .repo-desc:empty::after{content:'No description provided.';font-style:italic;color:var(--light)}
+
+            .repo-meta{display:flex;align-items:center;gap:18px;flex-wrap:wrap}
+            .repo-lang{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--mid)}
+            .lang-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+            .repo-stars{display:flex;align-items:center;gap:5px;font-size:12px;color:var(--mid)}
+            .repo-stars svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:1.5}
+            .repo-updated{font-size:11px;color:var(--light);letter-spacing:.04em;margin-left:auto}
+
+            /* ── GITHUB CTA ── */
+            .gh-cta{display:flex;align-items:center;justify-content:space-between;padding:32px 36px;border:1px solid var(--pale);background:var(--bg);gap:24px}
+            .gh-cta-left{display:flex;flex-direction:column;gap:6px}
+            .gh-cta-title{font-family:var(--static);font-size:18px;font-weight:400}
+            .gh-cta-sub{font-size:13px;color:var(--mid)}
+            .gh-cta-btn{font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;text-decoration:none;background:var(--fg);color:var(--bg);padding:11px 26px;transition:opacity .2s;white-space:nowrap;flex-shrink:0}
+            .gh-cta-btn:hover{opacity:.75}
+
+            /* ── LOADING STATE ── */
+            .loading-state{grid-column:1/-1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:80px 24px;gap:16px;background:var(--bg)}
+            .loading-spinner{width:28px;height:28px;border:2px solid var(--pale);border-top-color:var(--fg);border-radius:50%;animation:spin .8s linear infinite}
+            @keyframes spin{to{transform:rotate(360deg)}}
+            .loading-text{font-size:12px;color:var(--mid);letter-spacing:.1em}
+
+            /* ── ERROR STATE ── */
+            .error-state{grid-column:1/-1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:80px 24px;gap:12px;background:var(--bg);text-align:center}
+            .error-state p{font-size:14px;color:var(--mid);line-height:1.7}
+            .error-retry{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--fg);background:none;border:1px solid var(--pale);padding:8px 20px;cursor:pointer;transition:border-color .2s}
+            .error-retry:hover{border-color:var(--fg)}
+
+            /* ── SCROLL REVEAL ── */
+            .reveal{opacity:0;transform:translateY(22px)}
+
+            /* ── RESPONSIVE ── */
+            @media(max-width:900px){
+                .page-header{padding:120px 24px 40px}
+                .repo-wrap{padding:0 24px 60px}
+                .repo-grid{grid-template-columns:1fr}
+                .stats-bar{flex-wrap:wrap;gap:20px}
+                .stat-sep{display:none}
+                .gh-cta{flex-direction:column;align-items:flex-start;padding:24px}
+            }
+        </style>
+    </head>
+    <body>
+        <div id="c-ring"></div>
+        <div id="c-dot"></div>
+
+        <!-- back to top -->
+        <button class="back-top" id="back-top" aria-label="Back to top" title="Back to top">↑</button>
+
+        <!-- toggle dock -->
+        <div class="toggle-dock" id="toggle-dock">
+            <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode" title="Toggle theme">
+                <svg class="theme-icon theme-light" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+                <svg class="theme-icon theme-dark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+            </button>
+            <button class="cursor-toggle off" id="cursor-toggle" aria-label="Toggle custom cursor" title="Custom cursor: off">
+                <span class="ct-inner">
+                    <img class="ct-icon ct-icon-on" src="assets/cursor-dark.svg" alt="cursor" width="20" height="20">
+                    <img class="ct-icon ct-icon-off" src="assets/cursor-off.svg" alt="cursor off" width="20" height="20">
+                    <span class="ct-label">Cursor</span>
+                </span>
+            </button>
+        </div>
+
+        <!-- nav -->
+        <nav>
+            <a href="/index.html" class="n-logo">
+                <img src="assets/frame.png" alt="frame" width="30" height="30" flex-shrink="0" id="nav-frame">
+                qubixal.xyz
+            </a>
+            <ul class="nav-pages" id="nav-pages">
+                <li><a href="/index.html">Main / 主页</a></li>
+                <li><a href="/about.html">About / 关于</a></li>
+                <li><a href="/repo.html" aria-current="page">Repo / 仓库</a></li>
+                <li><a href="/archive.html">Archive / 档案</a></li>
+            </ul>
+            <button class="nav-toggle" aria-expanded="false" aria-controls="main-nav" aria-label="Open menu">☰</button>
+            <ul class="n-links" id="main-nav">
+                <li><a href="/index.html">Main / 主页</a></li>
+                <li><a href="/about.html">About / 关于</a></li>
+                <li><a href="/repo.html" aria-current="page">Repo / 仓库</a></li>
+                <li><a href="/archive.html">Archive / 档案</a></li>
+            </ul>
+            <span class="n-ver" id="ver-num">v0.1.0</span>
+        </nav>
+
+        <!-- page header -->
+        <header class="page-header">
+            <div class="page-label reveal"><span>01</span> Repo / 仓库</div>
+            <h1 class="page-title reveal">Things I've <em>built</em></h1>
+            <p class="page-sub reveal">我造的些东西挺有用的，不是吗～...
+            </p>
+        </header>
+
+        <!-- repo content -->
+        <div class="repo-wrap">
+            <!-- stats bar -->
+            <div class="stats-bar reveal" id="stats-bar">
+                <div class="stat-item">
+                    <span class="stat-num" id="stat-repos">…</span>
+                    <span class="stat-label">Repos</span>
+                </div>
+                <div class="stat-sep"></div>
+                <div class="stat-item">
+                    <span class="stat-num" id="stat-stars">…</span>
+                    <span class="stat-label">Stars</span>
+                </div>
+                <div class="stat-sep"></div>
+                <div class="stat-item">
+                    <span class="stat-num" id="stat-forks">…</span>
+                    <span class="stat-label">Forks</span>
+                </div>
+                <div class="stat-sep"></div>
+                <div class="stat-item">
+                    <span class="stat-num" id="stat-lang">…</span>
+                    <span class="stat-label">Languages</span>
+                </div>
+            </div>
+
+            <!-- repo grid -->
+            <div class="repo-grid" id="repo-grid">
+                <div class="loading-state">
+                    <div class="loading-spinner"></div>
+                    <span class="loading-text">Fetching repositories…</span>
+                </div>
+            </div>
+
+            <!-- github cta -->
+            <a href="https://github.com/qubixal" target="_blank" class="gh-cta reveal" style="text-decoration:none">
+                <div class="gh-cta-left">
+                    <div class="gh-cta-title">See everything on GitHub →</div>
+                    <div class="gh-cta-sub">github.com/qubixal</div>
+                </div>
+                <span class="gh-cta-btn">Open GitHub</span>
+            </a>
+        </div>
+
+        <!-- footer -->
+        <footer>
+            <span>© 2026 qubixal · q比工作室</span>
+            <ul class="f-links">
+                <li><a href="https://youtube.com/@qubixalYT" target="_blank">YouTube</a></li>
+                <li><a href="https://space.bilibili.com/3706941203286600" target="_blank">Bilibili</a></li>
+                <li><a href="https://github.com/qubixal" target="_blank">GitHub</a></li>
+            </ul>
+            <span>// making things since yesterday</span>
+        </footer>
+
+        <script src="scripts.js"></script>
+        <script>
+        // ── GITHUB REPO FETCHER ──
+        (function(){
+            const USERNAME = 'qubixal';
+            const API_URL = `https://api.github.com/users/${USERNAME}/repos?per_page=100&sort=updated&direction=desc`;
+            const grid = document.getElementById('repo-grid');
+
+            // Language color map (common ones)
+            const LANG_COLORS = {
+                JavaScript:'#f1e05a', TypeScript:'#2b7489', Python:'#3572A5',
+                HTML:'#e34c26', CSS:'#563d7c', Shell:'#89e051', Lua:'#000080',
+                'C#':'#178600', Java:'#b07219', Go:'#00ADD8', Rust:'#dea584',
+                Ruby:'#701516', PHP:'#4F5D95', Swift:'#ffac45', Kotlin:'#A97BFF',
+                Dart:'#00B4AB', Vue:'#41b883', SCSS:'#c6538c', null:'var(--light)'
+            };
+
+            function timeAgo(dateStr){
+                const then = new Date(dateStr);
+                const now = new Date();
+                const diff = now - then;
+                const mins = Math.floor(diff / 60000);
+                if(mins < 60) return `${mins}m ago`;
+                const hrs = Math.floor(mins / 60);
+                if(hrs < 24) return `${hrs}h ago`;
+                const days = Math.floor(hrs / 24);
+                if(days < 30) return `${days}d ago`;
+                const months = Math.floor(days / 30);
+                if(months < 12) return `${months}mo ago`;
+                const years = Math.floor(months / 12);
+                return `${years}y ago`;
+            }
+
+            function escapeHtml(str){
+                const d = document.createElement('div');
+                d.textContent = str || '';
+                return d.innerHTML;
+            }
+
+            function renderError(msg){
+                grid.innerHTML = `
+                    <div class="error-state">
+                        <p>${escapeHtml(msg)}</p>
+                        <button class="error-retry" onclick="location.reload()">Retry</button>
+                    </div>`;
+            }
+
+            function renderRepos(repos){
+                // Filter out the website repo itself (optional — keeping it shows transparency)
+                // const filtered = repos.filter(r => r.name !== 'qubixal.xyz');
+                const filtered = repos;
+
+                // Compute stats
+                const totalStars = repos.reduce((s,r)=>s+(r.stargazers_count||0),0);
+                const totalForks = repos.reduce((s,r)=>s+(r.forks_count||0),0);
+                const langs = [...new Set(repos.map(r=>r.language).filter(Boolean))];
+
+                // Update stats bar
+                document.getElementById('stat-repos').textContent = repos.length;
+                document.getElementById('stat-stars').textContent = totalStars;
+                document.getElementById('stat-forks').textContent = totalForks;
+                document.getElementById('stat-lang').textContent = langs.length;
+
+                // Build cards
+                grid.innerHTML = filtered.map(repo => {
+                    const langColor = LANG_COLORS[repo.language] || LANG_COLORS[null];
+                    const isFork = repo.fork;
+                    const desc = repo.description || '';
+                    const homepage = repo.homepage ? ` — <a href="${escapeHtml(repo.homepage)}" target="_blank" style="color:var(--mid);text-decoration:none;border-bottom:1px solid var(--pale);transition:color .2s" onmouseover="this.style.color='var(--fg)'" onmouseout="this.style.color='var(--mid)'">${escapeHtml(repo.homepage.replace(/^https?:\/\//,''))}</a>` : '';
+
+                    return `
+                    <div class="repo-card reveal">
+                        <div class="repo-top">
+                            <div class="repo-name">
+                                <svg class="repo-icon" viewBox="0 0 16 16" fill="currentColor"><path d="M2 2.5A2.5 2.5 0 0 1 4.5 0h8.75a.75.75 0 0 1 .75.75v12.5a.75.75 0 0 1-.75.75h-2.5a.75.75 0 0 1 0-1.5h1.75v-2h-8a1 1 0 0 0-.714 1.7.75.75 0 1 1-1.072 1.05A2.495 2.495 0 0 1 2 11.5Zm10.5-1h-8a1 1 0 0 0-1 1v6.708A2.486 2.486 0 0 1 4.5 10h8ZM5 12.25a.25.25 0 0 1 .25-.25h3.5a.25.25 0 0 1 .25.25v3.25a.75.75 0 0 1-.75.75h-2.5a.75.75 0 0 1-.75-.75Z"/></svg>
+                                <a href="${escapeHtml(repo.html_url)}" target="_blank">${escapeHtml(repo.name)}</a>
+                            </div>
+                            ${isFork ? '<span class="repo-badge fork">Fork</span>' : ''}
+                            ${repo.archived ? '<span class="repo-badge">Archived</span>' : ''}
+                        </div>
+                        <div class="repo-desc">${escapeHtml(desc)}${homepage}</div>
+                        <div class="repo-meta">
+                            ${repo.language ? `<span class="repo-lang"><span class="lang-dot" style="background:${langColor}"></span>${escapeHtml(repo.language)}</span>` : ''}
+                            ${repo.stargazers_count ? `<span class="repo-stars"><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></span>${repo.stargazers_count}</span>` : '<span></span>'}
+                            <span class="repo-updated">Updated ${timeAgo(repo.updated_at)}</span>
+                        </div>
+                    </div>`;
+                }).join('');
+
+                // Re-register scroll reveals for dynamically added elements
+                if(window.gsap && window.ScrollTrigger){
+                    gsap.registerPlugin(ScrollTrigger);
+                    document.querySelectorAll('.repo-card.reveal').forEach((el)=>{
+                        gsap.fromTo(el,{opacity:0,y:22},{opacity:1,y:0,duration:.6,ease:'power2.out',scrollTrigger:{trigger:el,start:'top 92%',once:true}});
+                    });
+                    // Also re-reveal the CTA
+                    document.querySelectorAll('.gh-cta.reveal').forEach((el)=>{
+                        gsap.fromTo(el,{opacity:0,y:22},{opacity:1,y:0,duration:.6,ease:'power2.out',scrollTrigger:{trigger:el,start:'top 92%',once:true}});
+                    });
+                }
+            }
+
+            // Fetch
+            fetch(API_URL)
+                .then(r=>{
+                    if(!r.ok) throw new Error(`GitHub API error: ${r.status}`);
+                    return r.json();
+                })
+                .then(repos=>{
+                    if(!Array.isArray(repos) || repos.length === 0){
+                        renderError('No public repositories found.');
+                        return;
+                    }
+                    renderRepos(repos);
+                })
+                .catch(err=>{
+                    console.error(err);
+                    renderError('Failed to load repositories. Check your connection or try again later.');
+                });
+        })();
+
+        // ── VERSION NUMBER ──
+        const now=new Date();
+        const ver=document.getElementById('ver-num');
+        if(ver) ver.textContent=`v0.${now.getFullYear()-2000}.${String(now.getMonth()+1).padStart(2,'0')}`;
+        </script>
+    </body>
+</html>
