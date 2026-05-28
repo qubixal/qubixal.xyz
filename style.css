@@ -38,7 +38,7 @@ nav::after{content:'';position:absolute;bottom:0;left:48px;right:48px;height:1px
 .nav-main .nav-sections a:hover{color:var(--fg)}
 .nav-main .nav-sections a:hover::after{width:100%}
 .nav-main.open .nav-sections{opacity:0;pointer-events:none}
-.nav-main .nav-pages-reveal{position:absolute;right:80px;top:50%;transform:translateY(-50%);display:flex;align-items:center;gap:36px;opacity:0;pointer-events:none;white-space:nowrap}
+.nav-main .nav-pages-reveal{position:absolute;right:120px;top:50%;transform:translateY(-50%);display:flex;align-items:center;gap:36px;opacity:0;pointer-events:none;white-space:nowrap}
 .nav-main .nav-pages-reveal a{font-size:clamp(0.75rem,1vw,1rem);letter-spacing:.12em;text-transform:uppercase;text-decoration:none;color:var(--mid);position:relative;transition:color .2s,opacity .3s,transform .3s;opacity:0;transform:translateX(12px);white-space:nowrap}
 .nav-main .nav-pages-reveal a::after{content:'';position:absolute;bottom:-2px;left:0;width:0;height:1px;background:var(--fg);transition:width .3s}
 .nav-main .nav-pages-reveal a:hover{color:var(--fg)}
@@ -52,6 +52,9 @@ nav::after{content:'';position:absolute;bottom:0;left:48px;right:48px;height:1px
 .nav-main .nav-more::before{content:'|';position:absolute;left:-20px;color:var(--pale);font-weight:300}
 .nav-main .nav-more-btn{font-family:var(--mono);font-size:clamp(0.75rem,1vw,1rem);letter-spacing:.12em;text-transform:uppercase;color:var(--mid);background:none;border:none;cursor:pointer;padding:0;transition:color .2s}
 .nav-main .nav-more-btn:hover{color:var(--fg)}
+.nav-chevron{display:inline-block;width:9px;height:9px;margin-right:6px;vertical-align:middle;position:relative;flex-shrink:0}
+.nav-chevron::before{content:'';position:absolute;top:50%;left:50%;width:5px;height:5px;border-left:1.5px solid var(--mid);border-bottom:1.5px solid var(--mid);transform:translate(-50%,-50%) rotate(45deg);transition:transform .25s}
+.nav-main.open .nav-chevron::before{transform:translate(-50%,-50%) rotate(-135deg)}
 
 /* ── NON-INDEX NAV ── */
 .nav-pages{display:none;gap:36px;list-style:none}
