@@ -711,10 +711,12 @@
                         document.body.classList.add('hide-cursor');
                         if(dot){ dot.style.display='block'; dot.style.opacity='0'; }
                         if(ring){ ring.style.display='block'; ring.style.opacity='0'; }
+                        document.body.style.cursor = 'none';
                     } else {
                         document.body.classList.remove('hide-cursor');
                         if(dot){ dot.style.display='none'; dot.style.opacity='0'; }
                         if(ring){ ring.style.display='none'; ring.style.opacity='0'; }
+                        document.body.style.cursor = 'default';
                     }
                     // Toggle button state
                     const btn = document.getElementById('cursor-toggle');
